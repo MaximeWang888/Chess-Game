@@ -8,8 +8,12 @@ import deplacement.*;
  * @version 1.0
  */
 
-public class Roi {
+public class  Roi extends Piece {
     private Couleur couleur;
+
+    public Roi(Couleur couleur) {
+        this.couleur = couleur;
+    }
 
     /**
      * Permet de déplacer le Roi
@@ -42,5 +46,12 @@ public class Roi {
      */
     public Couleur getCouleur(){
         return couleur;
+    }
+
+    @Override
+    public String toString() {
+        if(getCouleur() == Couleur.BLANC)
+            return "R";
+        return"r";
     }
 }

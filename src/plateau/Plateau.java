@@ -1,6 +1,9 @@
 package plateau;
 
 import piece.*;
+
+import java.util.ArrayList;
+
 /**
  * Modélise un plateau de jeu dans le jeu de l'échéquier.
  * @author  Fabien Rondan, Maxime Wang, Sebastien Ramirez
@@ -12,17 +15,20 @@ public class Plateau {
     private final static int HAUTEUR = 8;
 
     /** Le plateau de jeu */
+    //private ArrayList<Piece> tableauPiece;
     private Piece[][] tableauPiece;
 
     /**
      * Constructeur qui crée un plateau de jeu d'échecs
      */
     public Plateau(){
-        Piece[][] tableauPiece = new Piece[LARGEUR][HAUTEUR];
+        tableauPiece= new Piece[LARGEUR][HAUTEUR];
         for(int x = 0 ; x < LARGEUR; x++ ) {
             for(int y = 0 ; y < HAUTEUR; y++ )
-                tableauPiece[x][y] = null;
+                this.tableauPiece[x][y] = null;
         }
+        this.tableauPiece[3][3] = new Roi(Couleur.BLANC);
+        this.tableauPiece[6][6] = new Roi(Couleur.NOIR);
     }
 
     /**
@@ -44,7 +50,7 @@ public class Plateau {
      * @return le pion aux coordonnee voulu
      */
     public Piece getPiece(int x ,int y){
-        return tableauPiece[x][y];
+        return this.tableauPiece[x][y];
     }
 
     /**
@@ -74,7 +80,7 @@ public class Plateau {
                     chaineDeCaractere +=" ";
                 else
                     chaineDeCaractere += getPiece(j,i);
-                chaineDeCaractere +="| ";
+                chaineDeCaractere +=" ";
             }
             chaineDeCaractere +="| ";
             chaineDeCaractere +=HAUTEUR - i;
@@ -94,7 +100,13 @@ public class Plateau {
 
     public static void main(String[] args) {
         Plateau plateau = new Plateau();
-        System.out.println(plateau);
+
+        if(plateau.estVide(1,1))
+            System.out.println("est vide");
+        else
+            System.out.println("est pas vide");
+
+       System.out.println(plateau);
     }
 
 }
