@@ -6,8 +6,22 @@ package piece;
  * @version 1.0
  */
 public abstract class Piece  {
+
+    /** Couleur de la pièce */
     private Couleur couleur;
+
+    /** Coordonnée de la pièce */
     private Coordonnee coord;
+
+    /**
+     * Constructeur à partir d'une couleur et d'une coordonnée
+     * @param couleur la couleur de la pièce
+     * @param coord la coordonnée de la pièce
+     */
+    public Piece(Couleur couleur, Coordonnee coord) {
+        this.couleur = couleur;
+        this.coord = coord;
+    }
 
     /**
      * Permet de déplacer une pièce.

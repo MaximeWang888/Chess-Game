@@ -2,8 +2,6 @@ package plateau;
 
 import piece.*;
 
-import java.util.ArrayList;
-
 /**
  * Modélise un plateau de jeu dans le jeu de l'échéquier.
  * @author  Fabien Rondan, Maxime Wang, Sebastien Ramirez
@@ -11,8 +9,8 @@ import java.util.ArrayList;
  */
 public class Plateau {
     /** Les constantes pour la taille du plateau */
-    private final static int LARGEUR = 8;
-    private final static int HAUTEUR = 8;
+    public final static int LARGEUR = 8;
+    public final static int HAUTEUR = 8;
 
     /** Le plateau de jeu */
     //private ArrayList<Piece> tableauPiece;
@@ -27,8 +25,6 @@ public class Plateau {
             for(int y = 0 ; y < HAUTEUR; y++ )
                 this.tableauPiece[x][y] = null;
         }
-        this.tableauPiece[3][3] = new Roi(Couleur.BLANC);
-        this.tableauPiece[6][6] = new Roi(Couleur.NOIR);
     }
 
     /**
@@ -60,19 +56,19 @@ public class Plateau {
     public String toString(){
         String chaineDeCaractere = "  ";
         char[] lettre = {'a','b','c','d','e','f','g','h'};
-        for (char c : lettre) {
+        for (char c : lettre)
             chaineDeCaractere += "  " + c + " ";
-        }
+
         chaineDeCaractere +="\n ";
         chaineDeCaractere +=" ";
         for (int i = 0; i < HAUTEUR; i++) {
 
-            for (int k = 0; k < LARGEUR; k++) {
-                chaineDeCaractere +=" ---";
-            }
-            chaineDeCaractere +="\n";
-            chaineDeCaractere +=HAUTEUR - i;
-            chaineDeCaractere +=" ";
+            for (int k = 0; k < LARGEUR; k++)
+                chaineDeCaractere += " ---";
+
+            chaineDeCaractere += "\n";
+            chaineDeCaractere += HAUTEUR - i;
+            chaineDeCaractere += " ";
 
             for (int j = 0; j < LARGEUR; j++) {
                 chaineDeCaractere +="| ";
@@ -82,31 +78,22 @@ public class Plateau {
                     chaineDeCaractere += getPiece(j,i);
                 chaineDeCaractere +=" ";
             }
-            chaineDeCaractere +="| ";
-            chaineDeCaractere +=HAUTEUR - i;
-            chaineDeCaractere +="\n  ";
+            chaineDeCaractere += "| ";
+            chaineDeCaractere += HAUTEUR - i;
+            chaineDeCaractere += "\n  ";
         }
 
-        for (int k = 0; k < LARGEUR; k++) {
-            chaineDeCaractere +=" ---";
-        }
-        chaineDeCaractere +="\n  ";
-        for (char c : lettre) {
+        for (int k = 0; k < LARGEUR; k++)
+            chaineDeCaractere += " ---";
+
+        chaineDeCaractere += "\n  ";
+        for (char c : lettre)
             chaineDeCaractere += "  " + c + " ";
-        }
 
         return chaineDeCaractere;
     }
 
-    public static void main(String[] args) {
-        Plateau plateau = new Plateau();
-
-        if(plateau.estVide(1,1))
-            System.out.println("est vide");
-        else
-            System.out.println("est pas vide");
-
-       System.out.println(plateau);
+    public void ajoutPiece(Piece piece, Coordonnee coord) {
+        this.tableauPiece[coord.getColonne()][coord.getLigne()] = piece;
     }
-
 }

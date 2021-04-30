@@ -1,18 +1,15 @@
 package piece;
 
-import deplacement.*;
-
 /**
  * Modélise une tour dans le jeu de l'échéquier.
  * @author  Fabien Rondan, Maxime Wang, Sebastien Ramirez
  * @version 1.0
  */
 
-public class  Roi extends Piece {
-    private Couleur couleur;
+public class Roi extends Piece {
 
-    public Roi(Couleur couleur) {
-        this.couleur = couleur;
+    public Roi(Couleur couleur, Coordonnee coord) {
+        super(couleur, coord);
     }
 
     /**
@@ -27,7 +24,6 @@ public class  Roi extends Piece {
      * @return TRUE si le roi peut se déplacer à cette positions et FALSE s'il peut pas se déplacer
      */
     public boolean peutSeDeplacer(){
-
         return false;
     }
 
@@ -36,22 +32,18 @@ public class  Roi extends Piece {
      * @return TRUE si le roi est en danger d'echec et FALSE s'il ne l'ai pas
      */
     public boolean crainEchec(){
-
         return false;
     }
 
-    /**
-     * Permet de savoir la couleur du Roi
-     * @return Une couleur blanc ou noir
-     */
-    public Couleur getCouleur(){
-        return couleur;
-    }
 
+    /**
+     * Affiche le roi en caractère
+     * @return R si la piece est une pice Blanche et return r si la piece est noir 
+     */
     @Override
     public String toString() {
         if(getCouleur() == Couleur.BLANC)
             return "R";
-        return"r";
+        return "r";
     }
 }
