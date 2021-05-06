@@ -1,5 +1,7 @@
 package piece;
 
+import Echequier.Echequier;
+
 /**
  * Modélise une pièce d'échequier.
  * @author  Fabien Rondan, Maxime Wang, Sebastien Ramirez
@@ -23,20 +25,20 @@ public abstract class Piece  {
         this.coord = coord;
     }
 
+    public void setCoord(Coordonnee coord) {
+        this.coord = coord;
+    }
+
     /**
      * Permet de déplacer une pièce.
      */
-    public void deplacer(){
-
-    }
+    public abstract void deplacer(Coordonnee coord, Echequier e);
 
     /**
      * Permet de savoir si une pièce peut se déplacer ou non.
      * @return True si le déplacement est autorisé, False dans le cas contraire.
      */
-    public boolean peutSeDeplacer(){
-        return false;
-    }
+    public abstract boolean peutSeDeplacer(Coordonnee coord, Echequier e);
 
     /**
      * Permet d'avoir une représentation de la pièce sous la forme d'une chaîne de caractères.
@@ -50,8 +52,8 @@ public abstract class Piece  {
      * Permet de savoir si la pièce sur l'échequier est à nous
      * @return True si la pièce est une pièce alliée, False dans le cas contraire.
      */
-    public boolean estAllie(){
-    return true;
+    public boolean estAllie(Piece p){
+        return this.couleur == p.getCouleur();
     }
 
     /**
@@ -66,7 +68,10 @@ public abstract class Piece  {
      * Permet de connaître les coordonnées d'une pièce.
      * @return La coordonnée de la pièce
      */
-    public Coordonnee getcoordonne(){
+    public Coordonnee getCoordonnee(){
         return coord;
     }
+
+
+
 }

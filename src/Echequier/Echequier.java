@@ -1,4 +1,4 @@
-package plateau;
+package Echequier;
 
 import piece.*;
 
@@ -7,23 +7,23 @@ import piece.*;
  * @author  Fabien Rondan, Maxime Wang, Sebastien Ramirez
  * @version 1.0
  */
-public class Plateau {
+public class Echequier {
     /** Les constantes pour la taille du plateau */
     public final static int LARGEUR = 8;
     public final static int HAUTEUR = 8;
 
     /** Le plateau de jeu */
     //private ArrayList<Piece> tableauPiece;
-    private Piece[][] tableauPiece;
+    private Piece[][] plateau;
 
     /**
      * Constructeur qui crée un plateau de jeu d'échecs
      */
-    public Plateau(){
-        tableauPiece= new Piece[LARGEUR][HAUTEUR];
+    public Echequier(){
+        plateau = new Piece[LARGEUR][HAUTEUR];
         for(int x = 0 ; x < LARGEUR; x++ ) {
             for(int y = 0 ; y < HAUTEUR; y++ )
-                this.tableauPiece[x][y] = null;
+                this.plateau[x][y] = null;
         }
     }
 
@@ -34,19 +34,18 @@ public class Plateau {
      * @return True si la case est vide et FALSE dans le cas contraire
      */
     public boolean estVide(int x ,int y ){
-        if(tableauPiece[x][y] == null)
+        if(plateau[x][y] == null)
             return true;
         return false ;
     }
 
     /**
      * Permets de renvoyer le pion qui est aux coordonnee x et y
-     * @param x coordonnee x soit la largeur
-     * @param y coordonnee y soit la hauteur
+     * @param c La coordonnée à laquelle on prend la pièce
      * @return le pion aux coordonnee voulu
      */
-    public Piece getPiece(int x ,int y){
-        return this.tableauPiece[x][y];
+    public Piece getPiece(Coordonnee c){
+        return this.plateau[c.getColonne()][c.getLigne()];
     }
 
     /**
@@ -75,7 +74,7 @@ public class Plateau {
                 if (estVide(j,i))
                     chaineDeCaractere +=" ";
                 else
-                    chaineDeCaractere += getPiece(j,i);
+                    chaineDeCaractere += getPiece(new Coordonnee(i,j));
                 chaineDeCaractere +=" ";
             }
             chaineDeCaractere += "| ";
@@ -93,7 +92,20 @@ public class Plateau {
         return chaineDeCaractere;
     }
 
+    /**
+     * Permet d'ajouter une piece au coordonnée indiqué
+     * @param piece la pièce ajouter
+     * @param coord les coordonnées où l'on ajoute la piece
+     */
     public void ajoutPiece(Piece piece, Coordonnee coord) {
-        this.tableauPiece[coord.getColonne()][coord.getLigne()] = piece;
+        this.plateau[coord.getColonne()][coord.getLigne()] = piece;
+    }
+
+    /**
+     * Permet de faire pointer une case contenant un piece à null
+     * @param coord coordonnée de la casse ou l'on doit enelver la piece
+     */
+    public void enleverPieceDeLaCase(Coordonnee coord) {
+        this.plateau[coord.getColonne()][coord.getLigne()] = null;
     }
 }

@@ -1,6 +1,6 @@
 package piece;
 
-import plateau.Plateau;
+import Echequier.Echequier;
 
 /**
  * Modélise une coordonnée d'une pièce d'échecs.
@@ -51,7 +51,7 @@ public class Coordonnee {
      * @return True si les coordonnées son valide sinon return False
      */
     public boolean coordValide(){
-        return this.colonne>=0 & this.colonne< Plateau.LARGEUR & this.ligne>=0 & this.ligne< Plateau.HAUTEUR;
+        return this.colonne>=0 & this.colonne< Echequier.LARGEUR & this.ligne>=0 & this.ligne< Echequier.HAUTEUR;
     }
 
     /**
@@ -63,7 +63,7 @@ public class Coordonnee {
             this.ligne = -1 ;
 
         if(saisie.length()>= 2){
-            this.ligne = Plateau.HAUTEUR - Character.getNumericValue(saisie.charAt(1));
+            this.ligne = Echequier.HAUTEUR - Character.getNumericValue(saisie.charAt(1));
             char c = saisie.charAt(0);
             switch (c){
                 case 'a': colonne = 0;
