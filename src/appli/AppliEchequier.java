@@ -4,6 +4,7 @@ import echequier.*;
 import piece.Coordonnee;
 import piece.Couleur;
 import piece.Roi;
+import piece.Tour;
 
 /**
  * Modélise l'application lancant une
@@ -34,6 +35,11 @@ public class AppliEchequier {
         echequier.getPiece(r1.getCoordonnee()).deplacer(new Coordonnee(1,2),echequier);
         System.out.println(echequier);
 
+        System.out.println(echequier.getListeDeplacement());
+
+        IPiece t1 = new Tour(Couleur.BLANC, new Coordonnee(3,3));
+        echequier.ajoutPiece(t1, t1.getCoordonnee());
+        System.out.println(echequier);
         System.out.println(echequier.getListeDeplacement());
     }
 
