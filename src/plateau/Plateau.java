@@ -1,11 +1,25 @@
+package plateau;
+
+import pièces.Coordonnees;
+import pièces.Couleur;
+import pièces.FabriquePiece;
+import pièces.IPiece;
+import pièces.TypePiece;
+
 public class Plateau {
 
     private static int LIGNE = 8;
     private static int COLONNE = 8;
 
-    private IPiece [][] echequier = new IPiece [LIGNE][COLONNE];
+    private IPiece[][] echequier = new IPiece[LIGNE][COLONNE];
+    private Couleur couleurJoueur;
+    
+    public Plateau () {
+        initialiserPlateau();
+        couleurJoueur = Couleur.BLANC;
+    }
 
-    public void initialiserPlateau() {
+    private void initialiserPlateau() {
         FabriquePiece fp = new FabriquePiece();
 
         //------------------------ TOUR ----------------------------------
@@ -15,16 +29,27 @@ public class Plateau {
         echequier[7][7] = fp.creationPiece(Couleur.NOIR, TypePiece.TOUR);
         echequier[7][0] = fp.creationPiece(Couleur.NOIR, TypePiece.TOUR);
 
-        //---------------------- FOU ------------------------------------
+        //------------------------ FOU ----------------------------------
         echequier[0][5] = fp.creationPiece(Couleur.BLANC, TypePiece.FOU);
         echequier[0][2] = fp.creationPiece(Couleur.BLANC, TypePiece.FOU);
 
         echequier[7][5] = fp.creationPiece(Couleur.NOIR, TypePiece.FOU);
         echequier[7][2] = fp.creationPiece(Couleur.NOIR, TypePiece.FOU);
 
-        //------------------------ ROI ---------------------------------
-        echequier[7][3] = fp.creationPiece(Couleur.NOIR, TypePiece.ROI);
-        echequier[0][3] = fp.creationPiece(Couleur.BLANC, TypePiece.ROI);
+        //---------------------- CAVALIER -----------------------------------
+        echequier[0][1] = fp.creationPiece(Couleur.BLANC, TypePiece.CAVALIER);
+        echequier[0][6] = fp.creationPiece(Couleur.BLANC, TypePiece.CAVALIER);
+
+        echequier[7][6] = fp.creationPiece(Couleur.NOIR, TypePiece.CAVALIER);
+        echequier[7][1] = fp.creationPiece(Couleur.NOIR, TypePiece.CAVALIER);
+
+        //------------------------ ROI ----------------------------------
+        echequier[0][4] = fp.creationPiece(Couleur.BLANC, TypePiece.ROI);
+        echequier[7][4] = fp.creationPiece(Couleur.NOIR, TypePiece.ROI);
+
+        //------------------------- DAME ---------------------------------
+        echequier[0][3] = fp.creationPiece(Couleur.BLANC, TypePiece.DAME);
+        echequier[7][3] = fp.creationPiece(Couleur.NOIR, TypePiece.DAME);
     }
     public static int tailleMaxX() {
         return LIGNE;
@@ -41,7 +66,7 @@ public class Plateau {
                 if (echequier[idxLigne][idxColonne] != null) {
                     str.append(echequier[idxLigne][idxColonne].getNom() + " peut se déplacer en :\n");
                     for (Coordonnees destination : echequier[idxLigne][idxColonne].listeDeplacement(new Coordonnees(idxLigne, idxColonne), echequier)) {
-                        str.append("[" + destination.getX() + "][" + destination.getY() + "]\n");
+                        str.append("[" + destination.getLigne() + "][" + destination.getColonne() + "]\n");
                     }
                     str.append("\n");
                 }
@@ -49,6 +74,45 @@ public class Plateau {
         }
         return str.toString();
     }
+
+    public boolean isPartieTerminee() {
+        return false;
+    }
+
+    public boolean isDeplacementPossible(Coordonnees origine, Coordonnees destination) {
+        if ((origine.getLigne() < 0 || origine.getLigne() >= LIGNE) || (origine.getColonne() < 0 || origine.getColonne() >= COLONNE))
+            return false;
+
+        if (echequier[origine.getLigne()][origine.getColonne()] != null && echequier[origine.getLigne()][origine.getColonne()].getCouleur() == couleurJoueur)
+        {
+            for (Coordonnees destinationPossible : echequier[origine.getLigne()][origine.getColonne()].listeDeplacement(new Coordonnees(origine.getLigne(), origine.getColonne()), echequier))
+            {
+                if (destinationPossible.equals(destination))
+                    return true;
+            }
+            return false;
+        }
+
+        return false;
+    }
+
+    public void appliquerDeplacement(String deplacement) {
+        Coordonnees origine = new Coordonnees(deplacement.substring(0, 2));
+        Coordonnees destination = new Coordonnees(deplacement.substring(2));
+
+        echequier[destination.getLigne()][destination.getColonne()] = echequier[origine.getLigne()][origine.getColonne()];
+        echequier[origine.getLigne()][origine.getColonne()] = null;
+
+        changerTour();
+    }
+
+    private void changerTour() {
+        if (couleurJoueur == Couleur.BLANC)
+            couleurJoueur = Couleur.NOIR;
+        else
+            couleurJoueur = Couleur.BLANC;
+    }
+
     public String toString() {
         StringBuilder str = new StringBuilder();
 

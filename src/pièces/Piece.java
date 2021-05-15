@@ -1,5 +1,8 @@
+package pièces;
 
-public abstract class Piece implements IPiece{
+import plateau.Plateau;
+
+public abstract class Piece implements IPiece {
 
     private Couleur couleur;
 
@@ -14,7 +17,7 @@ public abstract class Piece implements IPiece{
     }
 
     protected boolean isCoordonneesExistent(Coordonnees coord) {
-        if ((coord.getX() >= 0 && coord.getX() < Plateau.tailleMaxX()) && (coord.getY() >= 0 && coord.getY() < Plateau.tailleMaxY()))
+        if ((coord.getLigne() >= 0 && coord.getLigne() < Plateau.tailleMaxX()) && (coord.getColonne() >= 0 && coord.getColonne() < Plateau.tailleMaxY()))
             return true;
         return false;
     }

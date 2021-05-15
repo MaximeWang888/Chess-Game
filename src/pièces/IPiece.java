@@ -1,3 +1,5 @@
+package pièces;
+
 import java.util.ArrayList;
 
 public interface IPiece {
