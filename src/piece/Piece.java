@@ -1,7 +1,7 @@
 package piece;
 
-import Echequier.Echequier;
-import Echequier.IPiece;
+import echequier.Echequier;
+import echequier.IPiece;
 
 /**
  * Modélise une pièce d'échequier.
@@ -61,6 +61,7 @@ public abstract class Piece implements IPiece {
      * Permet de savoir la couleur d'une pièce de l'echequier
      * @return Une couleur blanc ou noir
      */
+    @Override
     public Couleur getCouleur(){
         return couleur;
     }
@@ -69,6 +70,7 @@ public abstract class Piece implements IPiece {
      * Permet de connaître les coordonnées d'une pièce.
      * @return La coordonnée de la pièce
      */
+    @Override
     public Coordonnee getCoordonnee(){
         return coord;
     }

@@ -1,6 +1,6 @@
 package piece;
 
-import Echequier.Echequier;
+import echequier.Echequier;
 import org.junit.jupiter.api.Test;
 import static org.junit.Assert.*;
 

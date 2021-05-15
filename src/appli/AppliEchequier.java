@@ -1,9 +1,8 @@
 package appli;
 
-import Echequier.*;
+import echequier.*;
 import piece.Coordonnee;
 import piece.Couleur;
-import piece.Piece;
 import piece.Roi;
 
 /**
@@ -15,7 +14,7 @@ import piece.Roi;
 public class AppliEchequier {
 
     public static void main(String[] args) {
-        Piece r1 = new Roi(Couleur.BLANC, new Coordonnee(1,1));
+        IPiece r1 = new Roi(Couleur.BLANC, new Coordonnee(1,1));
         Echequier echequier = new Echequier();
         echequier.ajoutPiece(r1, r1.getCoordonnee());
         System.out.println(echequier);

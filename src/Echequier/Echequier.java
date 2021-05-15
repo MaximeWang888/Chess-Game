@@ -1,5 +1,6 @@
-package Echequier;
+package echequier;
 
+import piece.Coordonnee;
 import piece.*;
 
 /**
@@ -9,12 +10,11 @@ import piece.*;
  */
 public class Echequier {
     /** Les constantes pour la taille du plateau */
-    public final static int LARGEUR = 8;
-    public final static int HAUTEUR = 8;
+    public static final int LARGEUR = 8;
+    public static final int HAUTEUR = 8;
 
     /** Le plateau de jeu */
-    //private ArrayList<Piece> tableauPiece;
-    private Piece[][] plateau;
+    private IPiece[][] plateau;
 
     /**
      * Constructeur qui crée un plateau de jeu d'échecs
@@ -34,9 +34,7 @@ public class Echequier {
      * @return True si la case est vide et FALSE dans le cas contraire
      */
     public boolean estVide(int x ,int y ){
-        if(plateau[x][y] == null)
-            return true;
-        return false ;
+        return plateau[x][y] == null;
     }
 
     /**
@@ -44,7 +42,7 @@ public class Echequier {
      * @param c La coordonnée à laquelle on prend la pièce
      * @return le pion aux coordonnee voulu
      */
-    public Piece getPiece(Coordonnee c){
+    public IPiece getPiece(Coordonnee c){
         return this.plateau[c.getColonne()][c.getLigne()];
     }
 
@@ -53,43 +51,41 @@ public class Echequier {
      * @return Une chaine de caractère avec le plateau et tous les pions
      */
     public String toString(){
-        String chaineDeCaractere = "  ";
+        // String chaineDeCaractere = "  ";
+        StringBuilder chaineDeCaractere = new StringBuilder();
         char[] lettre = {'a','b','c','d','e','f','g','h'};
         for (char c : lettre)
-            chaineDeCaractere += "  " + c + " ";
+            chaineDeCaractere.append("  ").append(c).append(" ");
 
-        chaineDeCaractere +="\n ";
-        chaineDeCaractere +=" ";
+        chaineDeCaractere.append("\n ").append(" ");
         for (int i = 0; i < HAUTEUR; i++) {
 
             for (int k = 0; k < LARGEUR; k++)
-                chaineDeCaractere += " ---";
+                chaineDeCaractere.append(" ---");
 
-            chaineDeCaractere += "\n";
-            chaineDeCaractere += HAUTEUR - i;
-            chaineDeCaractere += " ";
+            chaineDeCaractere.append("\n").append(HAUTEUR - i).append(" ");
 
             for (int j = 0; j < LARGEUR; j++) {
-                chaineDeCaractere +="| ";
+                chaineDeCaractere.append("| ");
                 if (estVide(j,i))
-                    chaineDeCaractere +=" ";
+                    chaineDeCaractere.append(" ");
                 else
-                    chaineDeCaractere += getPiece(new Coordonnee(i,j));
-                chaineDeCaractere +=" ";
+                    chaineDeCaractere.append(getPiece(new Coordonnee(i, j)));
+                chaineDeCaractere.append(" ");
             }
-            chaineDeCaractere += "| ";
-            chaineDeCaractere += HAUTEUR - i;
-            chaineDeCaractere += "\n  ";
+            chaineDeCaractere.append("| ");
+            chaineDeCaractere.append(HAUTEUR - i);
+            chaineDeCaractere.append("\n  ");
         }
 
         for (int k = 0; k < LARGEUR; k++)
-            chaineDeCaractere += " ---";
+            chaineDeCaractere.append(" ---");
 
-        chaineDeCaractere += "\n  ";
+        chaineDeCaractere.append("\n  ");
         for (char c : lettre)
-            chaineDeCaractere += "  " + c + " ";
+            chaineDeCaractere.append("  ").append(c).append(" ");
 
-        return chaineDeCaractere;
+        return chaineDeCaractere.toString();
     }
 
     /**
@@ -97,7 +93,7 @@ public class Echequier {
      * @param piece la pièce ajouter
      * @param coord les coordonnées où l'on ajoute la piece
      */
-    public void ajoutPiece(Piece piece, Coordonnee coord) {
+    public void ajoutPiece(IPiece piece, Coordonnee coord) {
         this.plateau[coord.getColonne()][coord.getLigne()] = piece;
     }
 
@@ -118,10 +114,14 @@ public class Echequier {
         for (int idxLigne = 0; idxLigne < LARGEUR; idxLigne++) {
             for (int idxColonne = 0; idxColonne < HAUTEUR; idxColonne++) {
                 if (plateau[idxLigne][idxColonne] != null) {
-                    str.append(plateau[idxLigne][idxColonne].toString() +
-                            " peut se déplacer en : (format:[col][ligne])\n");
+                    str.append(plateau[idxLigne][idxColonne].toString())
+                            .append(" peut se déplacer en : (format:[col][ligne])\n");
                     for (Coordonnee destination : plateau[idxLigne][idxColonne].listeDeplacement(plateau)) {
-                        str.append("[" + destination.getColonne() + "][" + destination.getLigne() + "]\n");
+                        str.append("[")
+                                .append(destination.getColonne())
+                                .append("][")
+                                .append(destination.getLigne())
+                                .append("]\n");
                     }
                     str.append("\n");
                 }

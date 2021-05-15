@@ -1,8 +1,7 @@
-package Echequier;
+package echequier;
 
 import piece.Coordonnee;
 import piece.Couleur;
-import piece.Piece;
 
 import java.util.List;
 
@@ -13,7 +12,11 @@ import java.util.List;
  */
 public interface IPiece {
 
-    public abstract Couleur getCouleur();
+    Couleur getCouleur();
 
-    public abstract List<Coordonnee> listeDeplacement(Piece[][] echequier);
+    List<Coordonnee> listeDeplacement(IPiece[][] echequier);
+
+    Coordonnee getCoordonnee();
+
+    void deplacer(Coordonnee coordonnee, Echequier echequier);
 }

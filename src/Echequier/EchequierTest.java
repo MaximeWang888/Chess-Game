@@ -1,4 +1,4 @@
-package Echequier;
+package echequier;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -41,7 +41,7 @@ public class EchequierTest {
         echequier.ajoutPiece(new Roi(Couleur.BLANC, new Coordonnee(3,0)), new Coordonnee(3,0));
         echequier.ajoutPiece(new Roi(Couleur.NOIR, new Coordonnee(6,6)), new Coordonnee(6,6));
 
-        String affichage =
+         String affichage =
                         "    a   b   c   d   e   f   g   h \n" +
                         "   --- --- --- --- --- --- --- ---\n" +
                         "8 |   |   |   |   |   |   |   |   | 8\n" +

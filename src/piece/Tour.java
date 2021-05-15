@@ -1,6 +1,5 @@
 package piece;
 
-import deplacement.*;
 
 /**
  * Modélise une tour dans le jeu de l'échéquier.

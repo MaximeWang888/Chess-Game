@@ -1,6 +1,6 @@
 package piece;
 
-import Echequier.Echequier;
+import echequier.Echequier;
 
 /**
  * Modélise une coordonnée d'une pièce d'échecs.

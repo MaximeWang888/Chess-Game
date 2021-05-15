@@ -1,6 +1,7 @@
 package piece;
 
-import Echequier.Echequier;
+import echequier.Echequier;
+import  echequier.IPiece;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +15,9 @@ import java.util.List;
 public class Roi extends Piece {
 
     /**
-     *
-     * @param couleur
-     * @param coord
+     * Constructeur à partir d'une couleur et d'une coordonnée
+     * @param couleur la couleur du Roi
+     * @param coord la coordonnée du Roi
      */
     public Roi(Couleur couleur, Coordonnee coord) {
         super(couleur, coord);
@@ -74,7 +75,7 @@ public class Roi extends Piece {
      * @param echequier l'échequier sur lequel notre Roi se trouve
      * @return la liste des déplacements du Roi
      */
-    public List<Coordonnee> listeDeplacement(Piece[][] echequier) {
+    public List<Coordonnee> listeDeplacement(IPiece[][] echequier) {
         List<Coordonnee> listeDeplacement = new ArrayList<>();
 
         for (int varX = getCoordonnee().getColonne() - 1; varX <= getCoordonnee().getColonne() + 1; varX++) {
