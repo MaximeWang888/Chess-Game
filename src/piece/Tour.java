@@ -1,7 +1,5 @@
 package piece;
 
-
-import echequier.Echequier;
 import echequier.IPiece;
 
 import java.util.ArrayList;
@@ -32,31 +30,6 @@ public class Tour extends Piece{
         if (getCouleur() == Couleur.BLANC)
             return "T";
         return "t";
-    }
-
-    /**
-     * Permet de déplacer la Tour
-     * @param coord la coordonnée à laquelle on veut déplacer la Tour
-     * @param e L'échequier sur lequel le déplacement aura lieu
-     */
-    @Override
-    public void deplacer(Coordonnee coord, Echequier e) {
-        if (peutSeDeplacer(coord, e)){
-            e.enleverPieceDeLaCase(this.getCoordonnee());
-            e.ajoutPiece(this,coord);
-            super.setCoord(coord);
-        }
-    }
-
-    /**
-     * Permet de savoir si la Tour (la piece) peut se déplacer à une coordonnée
-     * @param coord la coordonnée à laquelle on veut déplacer la Tour
-     * @param e l'échéquier sur lequel on vérifie si le déplacement de la Tour peut avoir lieu
-     * @return TRUE si la Tour peut se déplacer à cette positions, FALSE dans le cas contraire
-     */
-    @Override
-    public boolean peutSeDeplacer(Coordonnee coord, Echequier e) {
-        return false;
     }
 
     /**

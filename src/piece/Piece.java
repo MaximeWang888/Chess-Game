@@ -32,28 +32,25 @@ public abstract class Piece implements IPiece {
 
     /**
      * Permet de déplacer une pièce.
+     * @param coord la coordonnée de destination
+     * @param e l'échéquier sur lequel le déplacement de la pièce aura lieu
      */
-    public abstract void deplacer(Coordonnee coord, Echequier e);
-
-    /**
-     * Permet de savoir si une pièce peut se déplacer ou non.
-     * @return True si le déplacement est autorisé, False dans le cas contraire.
-     */
-    public abstract boolean peutSeDeplacer(Coordonnee coord, Echequier e);
-
-    /**
-     * Permet d'avoir une représentation de la pièce sous la forme d'une chaîne de caractères.
-     * @return la représentation textuelle de la pièce
-     */
-    public String toString(){
-        return "";
+    @Override
+    public void deplacer(Coordonnee coord, Echequier e) {
+        for (Coordonnee c : listeDeplacement(e.getPlateau())) {
+            if ((c.getLigne() == coord.getLigne()) && (c.getColonne() == coord.getColonne())){
+                e.enleverPieceDeLaCase(this.getCoordonnee());
+                e.ajoutPiece(this,coord);
+                setCoord(coord);
+            }
+        }
     }
 
     /**
      * Permet de savoir si la pièce sur l'échequier est à nous
      * @return True si la pièce est une pièce alliée, False dans le cas contraire.
      */
-    public boolean estAllie(Piece p){
+    public boolean estAllie(IPiece p){
         return this.couleur == p.getCouleur();
     }
 

@@ -12,11 +12,11 @@ import java.util.List;
  */
 public interface IPiece {
 
-    Couleur getCouleur();
+    void deplacer(Coordonnee coordonnee, Echequier echequier);
 
     List<Coordonnee> listeDeplacement(IPiece[][] echequier);
 
-    Coordonnee getCoordonnee();
+    Couleur getCouleur();
 
-    void deplacer(Coordonnee coordonnee, Echequier echequier);
+    Coordonnee getCoordonnee();
 }

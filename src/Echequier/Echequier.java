@@ -27,6 +27,9 @@ public class Echequier {
         }
     }
 
+    public IPiece[][] getPlateau(){
+        return plateau;
+    }
     /**
      * Permet de savoir si la case contient un pion
      * @param x coordonnee x soit la largeur
@@ -47,11 +50,10 @@ public class Echequier {
     }
 
     /**
-     * Afficher le plateau avec les pions s'il y en a
+     * Afficher le plateau avec les pièces s'il y en a
      * @return Une chaine de caractère avec le plateau et tous les pions
      */
     public String toString(){
-        // String chaineDeCaractere = "  ";
         StringBuilder chaineDeCaractere = new StringBuilder();
         char[] lettre = {'a','b','c','d','e','f','g','h'};
         for (char c : lettre)
@@ -111,16 +113,16 @@ public class Echequier {
      */
     public String getListeDeplacement() {
         StringBuilder str = new StringBuilder();
-        for (int idxLigne = 0; idxLigne < LARGEUR; idxLigne++) {
-            for (int idxColonne = 0; idxColonne < HAUTEUR; idxColonne++) {
+        for (int idxLigne = 0; idxLigne < HAUTEUR; idxLigne++) {
+            for (int idxColonne = 0; idxColonne < LARGEUR; idxColonne++) {
                 if (plateau[idxLigne][idxColonne] != null) {
                     str.append(plateau[idxLigne][idxColonne].toString())
                             .append(" peut se déplacer en : (format:[col][ligne])\n");
                     for (Coordonnee destination : plateau[idxLigne][idxColonne].listeDeplacement(plateau)) {
                         str.append("[")
-                                .append(destination.getColonne())
-                                .append("][")
                                 .append(destination.getLigne())
+                                .append("][")
+                                .append(destination.getColonne())
                                 .append("]\n");
                     }
                     str.append("\n");
