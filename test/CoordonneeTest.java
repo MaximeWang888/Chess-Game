@@ -1,32 +1,32 @@
 import org.junit.jupiter.api.Test;
-import piece.Coordonnee;
-
 import static org.junit.jupiter.api.Assertions.*;
+
+import echiquier.Coordonnee;
 
 public class CoordonneeTest {
 
     @Test
-    public void getColonne() {
+    public void testGetY() {
         // GIVEN
         Coordonnee c = new Coordonnee(2,3);
 
         // THEN
-        assertEquals(c.getColonne(),3);
-        assertNotEquals(c.getColonne(),2);
+        assertEquals(c.getY(),3);
+        assertNotEquals(c.getY(),2);
     }
 
     @Test
-    public void getLigne() {
+    public void testGetX() {
         // GIVEN
         Coordonnee c = new Coordonnee(2,3);
 
         // THEN
-        assertEquals(c.getLigne(),2);
-        assertNotEquals(c.getLigne(),3);
+        assertEquals(c.getX(),2);
+        assertNotEquals(c.getX(),3);
     }
 
     @Test
-    public void coordValide() {
+    public void testCoordValide() {
         // GIVEN
         Coordonnee c = new Coordonnee(2,3);
         Coordonnee d = new Coordonnee(-1,-1);
@@ -37,7 +37,7 @@ public class CoordonneeTest {
     }
 
     @Test
-    public void conversionEnCoord() {
+    public void testConversionEnCoord() {
         // GIVEN
         Coordonnee c = new Coordonnee(-1,-1);
         String mot = "a8" ;
@@ -47,9 +47,9 @@ public class CoordonneeTest {
         c1.conversionEnCoord(mot1);
 
         // THEN
-        assertEquals(c.getColonne(),0);
-        assertEquals(c.getLigne(),0);
-        assertEquals(c1.getColonne(),7);
-        assertEquals(c1.getLigne(),7);
+        assertEquals(c.getY(),0);
+        assertEquals(c.getX(),0);
+        assertEquals(c1.getY(),7);
+        assertEquals(c1.getX(),7);
     }
 }

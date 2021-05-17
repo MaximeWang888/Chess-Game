@@ -1,7 +1,15 @@
 package appli;
 
-import echequier.*;
-import piece.*;
+import echiquier.Coordonnee;
+import echiquier.Echiquier;
+import echiquier.IPiece;
+
+import piece.Couleur;
+import piece.Roi;
+import piece.Tour;
+import piece.TypePiece;
+
+import java.util.Scanner;
 
 /**
  * Modélise l'application lancant une
@@ -10,38 +18,50 @@ import piece.*;
  * @version 1.0
  */
 public class AppliEchequier {
+    /** Déclare un objet et initialise avec un objet d'entrée standard prédéfini */
+    private static final Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
         IPiece r1 = new Roi(TypePiece.ROI, Couleur.BLANC, new Coordonnee(1,1));
-        Echequier echequier = new Echequier();
-        echequier.ajoutPiece(r1, r1.getCoordonnee());
-//        System.out.println(echequier);
-//
-//        System.out.println(echequier.getListeDeplacement());
-
-//        echequier.getPiece(r1.getCoordonnee()).deplacer(new Coordonnee(1,2),echequier);
-//        System.out.println(echequier);
-//
-//        System.out.println(echequier.getListeDeplacement());
-//
-//        echequier.getPiece(r1.getCoordonnee()).deplacer(new Coordonnee(2,2),echequier);
-//        System.out.println(echequier);
-//
-//        System.out.println(echequier.getListeDeplacement());
-//
-//        echequier.getPiece(r1.getCoordonnee()).deplacer(new Coordonnee(1,2),echequier);
-//        System.out.println(echequier);
-//
-//        System.out.println(echequier.getListeDeplacement());
-
         IPiece t1 = new Tour(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(0,0));
-        echequier.ajoutPiece(t1, t1.getCoordonnee());
-        System.out.println(echequier);
-        String d = echequier.getListeDeplacement();
-        System.out.println(d);
-        echequier.getPiece(t1.getCoordonnee()).deplacer(new Coordonnee(4,0), echequier);
-        System.out.println(echequier);
-        System.out.println(echequier.getListeDeplacement());
+        IPiece t2 = new Tour(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(3,1));
+        Echiquier echiquier = new Echiquier();
+
+        System.out.print("> ");
+        String coordDeplacement = sc.nextLine();
+        Coordonnee coord = new Coordonnee();
+        coord = coord.conversionEnCoord(coordDeplacement);
+
+        echiquier.ajoutPiece(r1, r1.getCoordonnee());
+        System.out.println(echiquier);
+        System.out.println(echiquier.getListeDeplacement());
+        System.out.println("1111111111111111111111111111111111111111111111111111111111");
+
+        echiquier.ajoutPiece(t1, t1.getCoordonnee());
+        System.out.println(echiquier);
+        System.out.println(echiquier.getListeDeplacement());
+        System.out.println("2222222222222222222222222222222222222222222222222222222222222222");
+
+        echiquier.deplacer(t1, coord);
+        // echiquier.getPiece(t1.getCoordonnee()).deplacer(new Coordonnee(5,0), echiquier);
+        System.out.println(echiquier);
+        System.out.println(echiquier.getListeDeplacement());
+        System.out.println("333333333333333333333333333333333333333333333333333333333333333");
+
+        echiquier.ajoutPiece(t2, t2.getCoordonnee());
+
+        echiquier.deplacer(t1, new Coordonnee(5,1));
+//        echiquier.getPiece(t1.getCoordonnee()).deplacer(new Coordonnee(5,1), echiquier);
+        System.out.println(echiquier);
+        System.out.println(echiquier.getListeDeplacement());
+        System.out.println("4444444444444444444444444444444444444444444444444444444444444444");
+        echiquier.enleverPieceDuPlateau(t1);
+        echiquier.ajoutPiece(t1, new Coordonnee(0,1));
+
+        echiquier.deplacer(r1, new Coordonnee(2,1));
+        System.out.println(echiquier);
+        System.out.println(echiquier.getListeDeplacement());
     }
+
 
 }

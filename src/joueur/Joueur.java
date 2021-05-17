@@ -5,7 +5,16 @@ package joueur;
  * @author  Fabien Rondan, Maxime Wang, Sebastien Ramirez
  * @version 1.0
  */
-public class Joueur {
+public abstract class Joueur {
+
+    private TypeJoueur type;
+
+    private String nom;
+
+    public Joueur(TypeJoueur type, String nom) {
+        this.type = type;
+        this.nom = nom;
+    }
 
     /**
      * Permet d'abandonner la partie.

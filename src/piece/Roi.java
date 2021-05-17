@@ -1,12 +1,13 @@
 package piece;
 
-import  echequier.IPiece;
+import echiquier.Coordonnee;
+import echiquier.IPiece;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static echequier.Echequier.HAUTEUR;
-import static echequier.Echequier.LARGEUR;
+import static echiquier.Echiquier.HAUTEUR;
+import static echiquier.Echiquier.LARGEUR;
 
 /**
  * Modélise une tour dans le jeu de l'échéquier.
@@ -41,31 +42,26 @@ public class Roi extends Piece {
     public boolean crainEchec(Coordonnee destinationRoi, List<Coordonnee> listeDeplacement){
 
         for (Coordonnee destPieceEnnemi : listeDeplacement) {
-            if (destPieceEnnemi.getColonne() == destinationRoi.getColonne() &&
-                    destPieceEnnemi.getLigne() == destinationRoi.getLigne())
+            if (destPieceEnnemi.getY() == destinationRoi.getY() &&
+                    destPieceEnnemi.getX() == destinationRoi.getX())
                 return true;
         }
 
         return false;
     }
 
-    /**
-     * Retourne la liste des possibilités pour le déplacement de la pièce Roi
-     * @param echequier l'échequier sur lequel le Roi se trouve
-     * @return une liste des possibilités de déplacements du Roi
-     */
+
     @Override
-    public List<Coordonnee> listeDeplacement(IPiece[][] echequier) {
+    public List<Coordonnee> listeDeplacement(IPiece[][] echiquier) {
         List<Coordonnee> listeDeplacement = new ArrayList<>();
-        List<Coordonnee> listeDeplacementPieceEnnemis = listeDeplacementPieceEnnemis(echequier);
+        List<Coordonnee> listeDeplacementPieceEnnemis = listeDeplacementPieceEnnemis(echiquier);
 
-
-        for (int varX = getCoordonnee().getColonne() - 1; varX <= getCoordonnee().getColonne() + 1; varX++) {
-            for (int varY = getCoordonnee().getLigne() - 1; varY <= getCoordonnee().getLigne() + 1; varY++ ) {
+        for (int varX = getCoordonnee().getY() - 1; varX <= getCoordonnee().getY() + 1; varX++) {
+            for (int varY = getCoordonnee().getX() - 1; varY <= getCoordonnee().getX() + 1; varY++ ) {
                 Coordonnee destination = new Coordonnee(varX, varY);
 
-                if (isCoordonneesExistent(destination) && (echequier[varX][varY] == null ||
-                        echequier[varX][varY].getCouleur() != this.getCouleur()) &&
+                if (isCoordonneesExistent(destination) && (echiquier[varX][varY] == null ||
+                        echiquier[varX][varY].getCouleur() != this.getCouleur()) &&
                         !crainEchec(destination, listeDeplacementPieceEnnemis))
                     listeDeplacement.add(destination);
             }
@@ -73,19 +69,23 @@ public class Roi extends Piece {
         return listeDeplacement;
     }
 
-    private List<Coordonnee> listeDeplacementPieceEnnemis(IPiece[][] echequier) {
+    /**
+     * Retourne une liste de déplacement des pièces ennemis
+     * @param echiquier l'éch
+     * @return
+     */
+    private List<Coordonnee> listeDeplacementPieceEnnemis(IPiece[][] echiquier) {
         List<Coordonnee> listeDeplacement = new ArrayList<>();
 
         for (int idxLigne = 0; idxLigne < LARGEUR; idxLigne++) {
             for (int idxColonne = 0; idxColonne < HAUTEUR; idxColonne++) {
-                IPiece piece = echequier[idxLigne][idxColonne];
+                IPiece piece = echiquier[idxLigne][idxColonne];
                 // est une pièce ennemie
                 if ((piece != null) && (this != piece) && (!this.estAllie(piece))){
-                    listeDeplacement = piece.listeDeplacement(echequier);
+                    listeDeplacement = piece.listeDeplacement(echiquier);
                 }
             }
         }
-
         return listeDeplacement;
     }
 }

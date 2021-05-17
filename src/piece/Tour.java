@@ -1,6 +1,7 @@
 package piece;
 
-import echequier.IPiece;
+import echiquier.Coordonnee;
+import echiquier.IPiece;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,15 +35,15 @@ public class Tour extends Piece{
 
     /**
      * Retourne une liste des possibilités pour le déplacement de la pièce Tour
-     * @param echequier l'échequier sur lequel la Tour se trouve
+     * @param echiquier l'échequier sur lequel la Tour se trouve
      * @return une liste des possibilités de déplacements de la Tour
      */
     @Override
-    public List<Coordonnee> listeDeplacement(IPiece[][] echequier) {
+    public List<Coordonnee> listeDeplacement(IPiece[][] echiquier) {
         List<Coordonnee> listeDeplacement = new ArrayList<>();
 
         for (Direction direction : Direction.values())
-            deplacementParDirection(getCoordonnee(), echequier, listeDeplacement, direction);
+            deplacementParDirection(getCoordonnee(), echiquier, listeDeplacement, direction);
 
         return listeDeplacement;
     }
@@ -56,8 +57,8 @@ public class Tour extends Piece{
      */
     private void deplacementParDirection(Coordonnee position, IPiece[][] echequier,
                                          List<Coordonnee> listeDeplacement, Direction direction) {
-        int variationX = variationX(position.getColonne(), direction);
-        int variationY = variationY(position.getLigne(), direction);
+        int variationX = variationX(position.getX(), direction);
+        int variationY = variationY(position.getY(), direction);
 
         Coordonnee destination = new Coordonnee(variationX, variationY);
 
