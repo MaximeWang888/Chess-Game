@@ -1,27 +1,24 @@
 import echequier.Echequier;
 import org.junit.jupiter.api.Test;
-import piece.Coordonnee;
-import piece.Couleur;
-import piece.Piece;
-import piece.Roi;
+import piece.*;
 
 import static org.junit.Assert.*;
 
 class PieceTest {
 
     @Test
-    void setCoord() {
+    void testSetCoord() {
         // GIVEN
-        Piece roi = new Roi(Couleur.NOIR,new Coordonnee(1,1));
+        Piece roi = new Roi(TypePiece.ROI, Couleur.NOIR,new Coordonnee(1,1));
         roi.setCoord(new Coordonnee(2,2));
         // THEN
         assertTrue(roi.getCoordonnee().getColonne() == 2 &&  roi.getCoordonnee().getLigne() ==2 );
     }
 
     @Test
-    void deplacer() {
+    void testDeplacer() {
         // GIVEN
-        Piece r1 = new Roi(Couleur.BLANC, new Coordonnee(1,1));
+        Piece r1 = new Roi(TypePiece.ROI, Couleur.BLANC, new Coordonnee(1,1));
         Echequier echequier = new Echequier();
         Coordonnee nouvelleCoordonnee = new Coordonnee(1,2);
         // WHEN
@@ -33,27 +30,27 @@ class PieceTest {
     }
 
     @Test
-    void estAllie() {
+    void testEstAllie() {
         // GIVEN
-        Piece roiMaxime = new Roi(Couleur.NOIR,new Coordonnee(1,1));
-        Piece roiFabien = new Roi(Couleur.NOIR,new Coordonnee(1,1));
+        Piece roiMaxime = new Roi(TypePiece.ROI, Couleur.NOIR,new Coordonnee(1,1));
+        Piece roiFabien = new Roi(TypePiece.ROI, Couleur.NOIR,new Coordonnee(1,1));
         // THEN
         assertTrue(roiMaxime.estAllie(roiFabien));
     }
 
     @Test
-    void getCouleur() {
+    void testGetCouleur() {
         // GIVEN
-        Piece roi = new Roi(Couleur.NOIR,new Coordonnee(1,1));
+        Piece roi = new Roi(TypePiece.ROI, Couleur.NOIR,new Coordonnee(1,1));
         // THEN
         assertTrue(roi.getCouleur() == Couleur.NOIR );
     }
 
     @Test
-    void getCoordonne() {
+    void testGetCoordonne() {
         // GIVEN
         Coordonnee c = new Coordonnee(1,1);
-        Piece roi = new Roi(Couleur.NOIR, c );
+        Piece roi = new Roi(TypePiece.ROI, Couleur.NOIR, c);
         // THEN
         assertEquals(roi.getCoordonnee() , c );
     }

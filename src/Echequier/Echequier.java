@@ -108,8 +108,9 @@ public class Echequier {
     }
 
     /**
-     *
-     * @return
+     * Permet de connaître sous une réprésentation textuelle les déplacements
+     * autorisés de toutes les pièces sur l'échequier.
+     * @return une liste de déplacement autorisé des pièces sur l'échequier
      */
     public String getListeDeplacement() {
         StringBuilder str = new StringBuilder();

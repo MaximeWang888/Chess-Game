@@ -17,8 +17,8 @@ public class Tour extends Piece{
      * @param couleur la couleur de la pièce
      * @param coord  la coordonnée de la pièce
      */
-    public Tour(Couleur couleur, Coordonnee coord) {
-        super(couleur, coord);
+    public Tour(TypePiece type, Couleur couleur, Coordonnee coord) {
+        super(type, couleur, coord);
     }
 
     /**

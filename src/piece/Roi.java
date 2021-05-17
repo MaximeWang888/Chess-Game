@@ -21,9 +21,7 @@ public class Roi extends Piece {
      * @param couleur la couleur du Roi
      * @param coord la coordonnée du Roi
      */
-    public Roi(Couleur couleur, Coordonnee coord) {
-        super(couleur, coord);
-    }
+    public Roi(TypePiece type, Couleur couleur, Coordonnee coord) { super(type, couleur, coord); }
 
     /**
      * Permet d'avoir une représentation du Roi sous la forme d'une chaîne de caractères.
@@ -67,7 +65,8 @@ public class Roi extends Piece {
                 Coordonnee destination = new Coordonnee(varX, varY);
 
                 if (isCoordonneesExistent(destination) && (echequier[varX][varY] == null ||
-                        echequier[varX][varY].getCouleur() != this.getCouleur()) && !crainEchec(destination, listeDeplacementPieceEnnemis))
+                        echequier[varX][varY].getCouleur() != this.getCouleur()) &&
+                        !crainEchec(destination, listeDeplacementPieceEnnemis))
                     listeDeplacement.add(destination);
             }
         }

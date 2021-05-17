@@ -10,6 +10,9 @@ import echequier.IPiece;
  */
 public abstract class Piece implements IPiece {
 
+    /** Le type de la pièce */
+    private TypePiece type;
+
     /** Couleur de la pièce */
     private Couleur couleur;
 
@@ -18,14 +21,39 @@ public abstract class Piece implements IPiece {
 
     /**
      * Constructeur à partir d'une couleur et d'une coordonnée
+     * @param type le type de la pièce
      * @param couleur la couleur de la pièce
      * @param coord la coordonnée de la pièce
      */
-    public Piece(Couleur couleur, Coordonnee coord) {
+    public Piece(TypePiece type, Couleur couleur, Coordonnee coord) {
+        this.type = type;
         this.couleur = couleur;
         this.coord = coord;
     }
 
+    /**
+     * Permet de connaître les coordonnées d'une pièce.
+     * @return La coordonnée de la pièce
+     */
+    @Override
+    public Coordonnee getCoordonnee(){
+        return coord;
+    }
+
+    /**
+     * Permet de savoir la couleur d'une pièce de l'echequier
+     * @return Une couleur blanc ou noir
+     */
+    @Override
+    public Couleur getCouleur(){
+        return couleur;
+    }
+
+    /**
+     * Permet de fixer une nouvelle valeur à la coordonnée
+     * @param coord la nouvelle coordonnée de la pièce
+     */
+    @Override
     public void setCoord(Coordonnee coord) {
         this.coord = coord;
     }
@@ -52,24 +80,6 @@ public abstract class Piece implements IPiece {
      */
     public boolean estAllie(IPiece p){
         return this.couleur == p.getCouleur();
-    }
-
-    /**
-     * Permet de savoir la couleur d'une pièce de l'echequier
-     * @return Une couleur blanc ou noir
-     */
-    @Override
-    public Couleur getCouleur(){
-        return couleur;
-    }
-
-    /**
-     * Permet de connaître les coordonnées d'une pièce.
-     * @return La coordonnée de la pièce
-     */
-    @Override
-    public Coordonnee getCoordonnee(){
-        return coord;
     }
 
     /**

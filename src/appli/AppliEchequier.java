@@ -1,10 +1,7 @@
 package appli;
 
 import echequier.*;
-import piece.Coordonnee;
-import piece.Couleur;
-import piece.Roi;
-import piece.Tour;
+import piece.*;
 
 /**
  * Modélise l'application lancant une
@@ -15,7 +12,7 @@ import piece.Tour;
 public class AppliEchequier {
 
     public static void main(String[] args) {
-        IPiece r1 = new Roi(Couleur.BLANC, new Coordonnee(1,1));
+        IPiece r1 = new Roi(TypePiece.ROI, Couleur.BLANC, new Coordonnee(1,1));
         Echequier echequier = new Echequier();
         echequier.ajoutPiece(r1, r1.getCoordonnee());
 //        System.out.println(echequier);
@@ -37,11 +34,14 @@ public class AppliEchequier {
 //
 //        System.out.println(echequier.getListeDeplacement());
 
-        IPiece t1 = new Tour(Couleur.NOIR, new Coordonnee(0,0));
+        IPiece t1 = new Tour(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(0,0));
         echequier.ajoutPiece(t1, t1.getCoordonnee());
         System.out.println(echequier);
         String d = echequier.getListeDeplacement();
         System.out.println(d);
+        echequier.getPiece(t1.getCoordonnee()).deplacer(new Coordonnee(4,0), echequier);
+        System.out.println(echequier);
+        System.out.println(echequier.getListeDeplacement());
     }
 
 }
