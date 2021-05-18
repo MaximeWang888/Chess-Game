@@ -9,6 +9,11 @@ import piece.Couleur;
 import piece.Roi;
 import piece.TypePiece;
 
+/**
+ * Tests unitaires sur la classe Echiquier dans le jeu de l'échiquier.
+ * @author  Fabien Rondan, Maxime Wang, Sebastien Ramirez
+ * @version 1.0
+ */
 public class EchiquierTest {
 
     @Test

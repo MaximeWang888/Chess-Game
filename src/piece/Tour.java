@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Modélise une tour dans le jeu de l'échéquier.
+ * Modélise une tour dans le jeu de l'échiquier.
  * @author  Fabien Rondan, Maxime Wang, Sebastien Ramirez
  * @version 1.0
  */

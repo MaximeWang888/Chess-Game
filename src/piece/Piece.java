@@ -5,7 +5,7 @@ import echiquier.Echiquier;
 import echiquier.IPiece;
 
 /**
- * Modélise une pièce d'échequier.
+ * Modélise une pièce d'échiquier.
  * @author  Fabien Rondan, Maxime Wang, Sebastien Ramirez
  * @version 1.0
  */

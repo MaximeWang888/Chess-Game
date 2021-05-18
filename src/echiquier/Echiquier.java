@@ -1,7 +1,7 @@
 package echiquier;
 
 /**
- * Modélise un plateau de jeu dans le jeu de l'échéquier.
+ * Modélise un plateau de jeu dans le jeu de l'échiquier.
  * @author  Fabien Rondan, Maxime Wang, Sebastien Ramirez
  * @version 1.0
  */

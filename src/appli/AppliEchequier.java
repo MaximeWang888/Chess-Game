@@ -4,8 +4,8 @@ import echiquier.Coordonnee;
 import echiquier.Echiquier;
 import echiquier.IPiece;
 
+import fabrique.FabriquePiece;
 import piece.Couleur;
-import piece.Roi;
 import piece.Tour;
 import piece.TypePiece;
 
@@ -22,7 +22,10 @@ public class AppliEchequier {
     private static final Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
-        IPiece r1 = new Roi(TypePiece.ROI, Couleur.BLANC, new Coordonnee(1,1));
+        FabriquePiece fp = new FabriquePiece();
+
+        IPiece r1 = fp.creationPiece(TypePiece.ROI, Couleur.BLANC, new Coordonnee(1,1));
+//        IPiece r1 = new Roi(TypePiece.ROI, Couleur.BLANC, new Coordonnee(1,1));
         IPiece t1 = new Tour(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(0,0));
         IPiece t2 = new Tour(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(3,1));
         Echiquier echiquier = new Echiquier();

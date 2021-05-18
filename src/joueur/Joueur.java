@@ -1,19 +1,19 @@
 package joueur;
 
+import echiquier.IJoueur;
+
 /**
  * Modélise un joueur dans le jeu d'Echecs.
  * @author  Fabien Rondan, Maxime Wang, Sebastien Ramirez
  * @version 1.0
  */
-public abstract class Joueur {
+public abstract class Joueur implements IJoueur {
 
+    /** Le type du joueur */
     private TypeJoueur type;
 
-    private String nom;
-
-    public Joueur(TypeJoueur type, String nom) {
+    public Joueur(TypeJoueur type) {
         this.type = type;
-        this.nom = nom;
     }
 
     /**

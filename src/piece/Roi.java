@@ -10,7 +10,7 @@ import static echiquier.Echiquier.HAUTEUR;
 import static echiquier.Echiquier.LARGEUR;
 
 /**
- * Modélise une tour dans le jeu de l'échéquier.
+ * Modélise une tour dans le jeu de l'échiquier.
  * @author  Fabien Rondan, Maxime Wang, Sebastien Ramirez
  * @version 1.0
  */

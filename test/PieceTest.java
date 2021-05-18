@@ -9,7 +9,12 @@ import piece.Couleur;
 import piece.Roi;
 import piece.TypePiece;
 
-class PieceTest {
+/**
+ * Tests unitaires sur la classe Piece dans le jeu de l'échiquier.
+ * @author  Fabien Rondan, Maxime Wang, Sebastien Ramirez
+ * @version 1.0
+ */
+public class PieceTest {
 
     @Test
     void testSetCoord() {
