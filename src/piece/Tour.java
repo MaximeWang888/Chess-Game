@@ -6,6 +6,10 @@ import echiquier.IPiece;
 import java.util.ArrayList;
 import java.util.List;
 
+import static echiquier.Coordonnee.MINIMUM;
+import static echiquier.Echiquier.HAUTEUR;
+import static echiquier.Echiquier.LARGEUR;
+
 /**
  * Modélise une tour dans le jeu de l'échiquier.
  * @author  Fabien Rondan, Maxime Wang, Sebastien Ramirez
@@ -20,6 +24,7 @@ public class Tour extends Piece{
      */
     public Tour(TypePiece type, Couleur couleur, Coordonnee coord) {
         super(type, couleur, coord);
+        assert (type == TypePiece.TOUR);
     }
 
     /**
@@ -57,22 +62,40 @@ public class Tour extends Piece{
      */
     private void deplacementParDirection(Coordonnee position, IPiece[][] echequier,
                                          List<Coordonnee> listeDeplacement, Direction direction) {
+        boolean indexOutOfBounds = false;
         int variationX = variationX(position.getX(), direction);
         int variationY = variationY(position.getY(), direction);
 
         Coordonnee destination = new Coordonnee(variationX, variationY);
 
-        while (isCoordonneesExistent(destination) && echequier[variationX][variationY] == null) {
-            listeDeplacement.add(destination);
-
-            variationX = variationX(variationX, direction);
-            variationY = variationY(variationY, direction);
-
-            destination = new Coordonnee(variationX, variationY);
+        while (!indexOutOfBounds){
+            indexOutOfBounds = aide(destination, echequier, listeDeplacement, direction, variationX, variationY);
         }
 
-        if (isCoordonneesExistent(destination) && echequier[variationX][variationY].getCouleur() != this.getCouleur())
-            listeDeplacement.add(destination);
+    }
+
+    private boolean aide(Coordonnee destination, IPiece[][] echequier, List<Coordonnee> listeDeplacement,
+                         Direction direction, int variationX, int variationY){
+        while (isCoordonneeExistante(destination)){
+            if (variationX == this.getCoordonnee().getX() && variationY == this.getCoordonnee().getY())
+                return true;
+            while (echequier[variationX][variationY] == null){
+                listeDeplacement.add(destination);
+
+                variationX = variationX(variationX, direction);
+                variationY = variationY(variationY, direction);
+                if (listeDeplacement.get(listeDeplacement.size() - 1).getX() == variationX &&
+                        listeDeplacement.get(listeDeplacement.size() - 1).getY() == variationY)
+                    return true;
+
+                if (variationX >= MINIMUM && variationX < LARGEUR && variationY >= MINIMUM && variationY < HAUTEUR)
+                    destination = new Coordonnee(variationX, variationY);
+                else
+                    return true;
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -83,6 +106,8 @@ public class Tour extends Piece{
      * Moins un si la direction va vers l'OUEST ET Plus un si la direction va vers l'EST.
      */
     private int variationX(int variationX, Direction direction) {
+        if ((variationX == MINIMUM && direction != Direction.EST) || (variationX == HAUTEUR -1 && direction != Direction.OUEST))
+            return variationX;
         switch (direction) {
             case OUEST : return --variationX;
             case EST   : return ++variationX;
@@ -98,6 +123,8 @@ public class Tour extends Piece{
      * Moins un si la direction va vers le NORD ET Plus un si la direction va vers le SUD.
      */
     private int variationY(int variationY, Direction direction) {
+        if ((variationY == MINIMUM && direction != Direction.SUD) || (variationY == HAUTEUR - 1 && direction != Direction.NORD))
+            return variationY;
         switch (direction) {
             case NORD  : return --variationY;
             case SUD   : return ++variationY;

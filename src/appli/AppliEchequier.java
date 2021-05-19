@@ -26,8 +26,8 @@ public class AppliEchequier {
 
         IPiece r1 = fp.creationPiece(TypePiece.ROI, Couleur.BLANC, new Coordonnee(1,1));
 //        IPiece r1 = new Roi(TypePiece.ROI, Couleur.BLANC, new Coordonnee(1,1));
-        IPiece t1 = new Tour(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(0,0));
-        IPiece t2 = new Tour(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(3,1));
+        IPiece t1 = fp.creationPiece(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(0,0));
+        IPiece t2 = fp.creationPiece(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(3,1));
         Echiquier echiquier = new Echiquier();
 
         System.out.print("> ");
@@ -37,14 +37,18 @@ public class AppliEchequier {
 
         echiquier.ajoutPiece(r1, r1.getCoordonnee());
         System.out.println(echiquier);
+        echiquier.deplacer(r1, new Coordonnee(2,1));
+        System.out.println(echiquier);
         System.out.println(echiquier.getListeDeplacement());
         System.out.println("1111111111111111111111111111111111111111111111111111111111");
 
         echiquier.ajoutPiece(t1, t1.getCoordonnee());
         System.out.println(echiquier);
-        System.out.println(echiquier.getListeDeplacement());
+        String s = echiquier.getListeDeplacement();
+        System.out.println(s);
         System.out.println("2222222222222222222222222222222222222222222222222222222222222222");
 
+        System.out.println(coord);
         echiquier.deplacer(t1, coord);
         // echiquier.getPiece(t1.getCoordonnee()).deplacer(new Coordonnee(5,0), echiquier);
         System.out.println(echiquier);
@@ -56,7 +60,8 @@ public class AppliEchequier {
         echiquier.deplacer(t1, new Coordonnee(5,1));
 //        echiquier.getPiece(t1.getCoordonnee()).deplacer(new Coordonnee(5,1), echiquier);
         System.out.println(echiquier);
-        System.out.println(echiquier.getListeDeplacement());
+        String s1 = echiquier.getListeDeplacement();
+        System.out.println(s1);
         System.out.println("4444444444444444444444444444444444444444444444444444444444444444");
         echiquier.enleverPieceDuPlateau(t1);
         echiquier.ajoutPiece(t1, new Coordonnee(0,1));

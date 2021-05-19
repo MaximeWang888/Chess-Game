@@ -4,6 +4,8 @@ import echiquier.Coordonnee;
 import echiquier.Echiquier;
 import echiquier.IPiece;
 
+import static echiquier.Coordonnee.MINIMUM;
+
 /**
  * Modélise une pièce d'échiquier.
  * @author  Fabien Rondan, Maxime Wang, Sebastien Ramirez
@@ -72,11 +74,9 @@ public abstract class Piece implements IPiece {
      * @param coord la coordonnée auquel nous vérifions si elle existe ou pas dans le plateau de jeu
      * @return TRUE si la coordonnée existe dans le plateau de jeu, FALSE dans le cas contraire
      */
-    public boolean isCoordonneesExistent(Coordonnee coord) {
-        if ((coord.getY() >= 0 && coord.getY() < Echiquier.LARGEUR) &&
-                (coord.getX() >= 0 && coord.getX() < Echiquier.HAUTEUR))
-            return true;
-        return false;
+    public boolean isCoordonneeExistante(Coordonnee coord) {
+        return ((coord.getY() >= MINIMUM && coord.getY() < Echiquier.LARGEUR)
+                && (coord.getX() >= MINIMUM && coord.getX() < Echiquier.HAUTEUR));
     }
 
 }

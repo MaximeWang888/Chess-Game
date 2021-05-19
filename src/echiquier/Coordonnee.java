@@ -13,13 +13,17 @@ public class Coordonnee {
     /** Les coordonnées d'une pièce */
     private int x, y;
 
+    /** Le minimum de la dimension du plateau d'échec */
+    public static final int MINIMUM = 0;
+
     /**
      * Constructeur à partir d'une colonne et d'une ligne
      * @param x la colonne d'une coordonnée
      * @param y la ligne d'une coordonnée
      */
     public Coordonnee(int x, int y) {
-        assert (x < LARGEUR && x >= 0 && y < HAUTEUR && y >= 0);
+        assert ((x < LARGEUR && x >= MINIMUM) && (y < HAUTEUR && y >= MINIMUM))
+                : "La coordonnée dépasse la dimension de l'échiquier.";
         this.x = x;
         this.y = y;
     }
@@ -52,7 +56,7 @@ public class Coordonnee {
      * @return True si les coordonnées son valide sinon return False
      */
     public boolean coordValide(){
-        return this.y >= 0 && this.y < Echiquier.LARGEUR && this.x >= 0 && this.x < HAUTEUR;
+        return this.y >= MINIMUM && this.y < Echiquier.LARGEUR && this.x >= MINIMUM && this.x < HAUTEUR;
     }
 
     /**
@@ -95,10 +99,7 @@ public class Coordonnee {
      */
     @Override
     public String toString() {
-        return "Coordonnee{" +
-                "colonne=" + x +
-                ", ligne=" + y +
-                '}';
+        return "Coordonnee{" + "colonne=" + x + ", ligne=" + y + '}';
     }
 
 }

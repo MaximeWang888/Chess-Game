@@ -36,7 +36,7 @@ public class Echiquier {
     /**
      * Permet de renvoyer la pièce qui est à la coordonnée x et y
      * @param c La coordonnée à laquelle on prend la pièce
-     * @return le pion aux coordonnee voulu
+     * @return la pièce aux coordonnees voulu
      */
     public IPiece getPiece(Coordonnee c){
         return this.plateau[c.getX()][c.getY()];
@@ -130,12 +130,12 @@ public class Echiquier {
      */
     public String getListeDeplacement() {
         StringBuilder str = new StringBuilder();
-        for (int idxLigne = 0; idxLigne < HAUTEUR; idxLigne++) {
-            for (int idxColonne = 0; idxColonne < LARGEUR; idxColonne++) {
-                if (plateau[idxLigne][idxColonne] != null) {
-                    str.append(plateau[idxLigne][idxColonne].toString())
+        for (int x = 0; x < LARGEUR; x++) {
+            for (int y = 0; y < HAUTEUR; y++) {
+                if (plateau[x][y] != null) {
+                    str.append(plateau[x][y].toString())
                             .append(" peut se déplacer en : (format:[COL][LIGNE])\n");
-                    for (Coordonnee destination : plateau[idxLigne][idxColonne].listeDeplacement(plateau)) {
+                    for (Coordonnee destination : plateau[x][y].listeDeplacement(plateau)) {
                         str.append("[")
                                 .append(destination.getX())
                                 .append("][")

@@ -22,7 +22,10 @@ public class Roi extends Piece {
      * @param couleur la couleur du Roi
      * @param coord la coordonnée du Roi
      */
-    public Roi(TypePiece type, Couleur couleur, Coordonnee coord) { super(type, couleur, coord); }
+    public Roi(TypePiece type, Couleur couleur, Coordonnee coord) {
+        super(type, couleur, coord);
+        assert (type == TypePiece.ROI);
+    }
 
     /**
      * Permet d'avoir une représentation du Roi sous la forme d'une chaîne de caractères.
@@ -50,17 +53,16 @@ public class Roi extends Piece {
         return false;
     }
 
-
     @Override
     public List<Coordonnee> listeDeplacement(IPiece[][] echiquier) {
         List<Coordonnee> listeDeplacement = new ArrayList<>();
         List<Coordonnee> listeDeplacementPieceEnnemis = listeDeplacementPieceEnnemis(echiquier);
 
-        for (int varX = getCoordonnee().getY() - 1; varX <= getCoordonnee().getY() + 1; varX++) {
-            for (int varY = getCoordonnee().getX() - 1; varY <= getCoordonnee().getX() + 1; varY++ ) {
+        for (int varX = getCoordonnee().getX() - 1; varX <= getCoordonnee().getX() + 1; varX++) {
+            for (int varY = getCoordonnee().getY() - 1; varY <= getCoordonnee().getY() + 1; varY++ ) {
                 Coordonnee destination = new Coordonnee(varX, varY);
 
-                if (isCoordonneesExistent(destination) && (echiquier[varX][varY] == null ||
+                if (isCoordonneeExistante(destination) && (echiquier[varX][varY] == null ||
                         echiquier[varX][varY].getCouleur() != this.getCouleur()) &&
                         !crainEchec(destination, listeDeplacementPieceEnnemis))
                     listeDeplacement.add(destination);
@@ -71,15 +73,15 @@ public class Roi extends Piece {
 
     /**
      * Retourne une liste de déplacement des pièces ennemis
-     * @param echiquier l'éch
-     * @return
+     * @param echiquier l'échiquier testé
+     * @return une liste de déplacement des pièces ennemis
      */
     private List<Coordonnee> listeDeplacementPieceEnnemis(IPiece[][] echiquier) {
         List<Coordonnee> listeDeplacement = new ArrayList<>();
 
-        for (int idxLigne = 0; idxLigne < LARGEUR; idxLigne++) {
-            for (int idxColonne = 0; idxColonne < HAUTEUR; idxColonne++) {
-                IPiece piece = echiquier[idxLigne][idxColonne];
+        for (int x = 0; x < LARGEUR; x++) {
+            for (int y = 0; y < HAUTEUR; y++) {
+                IPiece piece = echiquier[x][y];
                 // est une pièce ennemie
                 if ((piece != null) && (this != piece) && (!this.estAllie(piece))){
                     listeDeplacement = piece.listeDeplacement(echiquier);
