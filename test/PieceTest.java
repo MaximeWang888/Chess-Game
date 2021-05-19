@@ -17,6 +17,15 @@ import piece.TypePiece;
 public class PieceTest {
 
     @Test
+    void testGetType(){
+        // GIVEN
+        IPiece roi = new Roi(TypePiece.ROI, Couleur.BLANC, new Coordonnee(1,1));
+        IPiece roi2 = new Roi(TypePiece.ROI, Couleur.NOIR, new Coordonnee(5,5));
+        // THEN
+        assertEquals(roi.getType(), roi2.getType());
+    }
+
+    @Test
     void testSetCoord() {
         // GIVEN
         IPiece roi = new Roi(TypePiece.ROI, Couleur.NOIR,new Coordonnee(1,1));

@@ -6,7 +6,6 @@ import echiquier.IPiece;
 
 import fabrique.FabriquePiece;
 import piece.Couleur;
-import piece.Tour;
 import piece.TypePiece;
 
 import java.util.Scanner;
@@ -25,7 +24,6 @@ public class AppliEchequier {
         FabriquePiece fp = new FabriquePiece();
 
         IPiece r1 = fp.creationPiece(TypePiece.ROI, Couleur.BLANC, new Coordonnee(1,1));
-//        IPiece r1 = new Roi(TypePiece.ROI, Couleur.BLANC, new Coordonnee(1,1));
         IPiece t1 = fp.creationPiece(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(0,0));
         IPiece t2 = fp.creationPiece(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(3,1));
         Echiquier echiquier = new Echiquier();
