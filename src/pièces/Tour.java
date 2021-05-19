@@ -2,7 +2,7 @@ package pièces;
 
 import java.util.ArrayList;
 
-public class Tour extends Piece {
+public class Tour extends Piece{
 
     @Override
     public char getNom() {
@@ -11,7 +11,7 @@ public class Tour extends Piece {
         else
             return 't';
     }
-
+    
     public Tour (Couleur couleur)
     {
         super(couleur);
@@ -30,37 +30,37 @@ public class Tour extends Piece {
     }
 
     private void deplacementParDirection(Coordonnees position, IPiece[][] echiquier, ArrayList<Coordonnees> listeDeplacement, Direction direction) {
-        int variationX = variationX(position.getLigne(), direction);
-        int variationY = variationY(position.getColonne(), direction);
+        int varLigne = varLigne(position.getLigne(), direction);
+        int varColonne = varColonne(position.getColonne(), direction);
 
-        Coordonnees destination = new Coordonnees(variationX, variationY);
+        Coordonnees destination = new Coordonnees(varLigne, varColonne);
 
-        while (isCoordonneesExistent(destination) && echiquier[variationX][variationY] == null) {
+        while (isCoordonneesExistent(destination) && echiquier[varLigne][varColonne] == null) {
             listeDeplacement.add(destination);
-
-            variationX = variationX(variationX, direction);
-            variationY = variationY(variationY, direction);
-
-            destination = new Coordonnees(variationX, variationY);
+ 
+            varLigne = varLigne(varLigne, direction);
+            varColonne = varColonne(varColonne, direction);
+    
+            destination = new Coordonnees(varLigne, varColonne);
         }
 
-        if (isCoordonneesExistent(destination) && echiquier[variationX][variationY].getCouleur() != this.getCouleur())
+        if (isCoordonneesExistent(destination) && echiquier[varLigne][varColonne].getCouleur() != this.getCouleur())
             listeDeplacement.add(destination);
     }
 
-    private int variationX(int variationX, Direction direction) {
+    private int varLigne(int varLigne, Direction direction) {
         switch (direction) {
-            case OUEST : return --variationX;
-            case EST   : return ++variationX;
-            default    : return variationX;
+            case OUEST : return --varLigne;
+            case EST   : return ++varLigne;
+            default    : return varLigne;
         }
     }
 
-    private int variationY(int variationY, Direction direction) {
+    private int varColonne(int varColonne, Direction direction) {
         switch (direction) {
-            case NORD  : return --variationY;
-            case SUD   : return ++variationY;
-            default    : return variationY;
+            case NORD  : return --varColonne;
+            case SUD   : return ++varColonne;
+            default    : return varColonne;
         }
     }
 

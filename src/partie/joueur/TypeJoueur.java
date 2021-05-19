@@ -1,5 +1,5 @@
 package partie.joueur;
 
 public enum TypeJoueur {
-    HUMAIN;
+    HUMAIN, ORDI
 }

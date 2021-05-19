@@ -3,13 +3,14 @@ package pièces;
 import plateau.Plateau;
 
 public class Coordonnees {
+    
     private int ligne;
     private int colonne;
 
-    public Coordonnees(int x, int y) {
-
-        this.ligne = x;
-        this.colonne = y;
+    public Coordonnees(int ligne, int colonne)
+    {
+        this.ligne = ligne;
+        this.colonne = colonne;
     }
 
     public Coordonnees(String coord)
@@ -20,7 +21,7 @@ public class Coordonnees {
 
     private int convertLigne(char numLigne)
     {
-        return Plateau.tailleMaxX() - Character.getNumericValue(numLigne);
+        return Plateau.getTailleLigne() - Character.getNumericValue(numLigne);
     }
 
     private int convertColonne(char lettreColonne)
@@ -37,18 +38,27 @@ public class Coordonnees {
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object obj) 
     {
         // test sur les références
         if (this == obj)
             return true;
+
         if (obj == null)
             return false;
+
         // test sur les classes
         if (this.getClass() != obj.getClass ())
             return false;
+            
         // test sur les données
         Coordonnees other = (Coordonnees) obj;
         return (this.ligne == other.ligne && this.colonne == other.colonne);
     }
+
+    @Override
+    public String toString() {
+        return Character.toString((char)(colonne + 97)) + Integer.toString(Plateau.getTailleLigne() - ligne);
+    }
+
 }

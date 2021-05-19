@@ -12,8 +12,7 @@ public class Roi extends Piece {
             return 'r';
     }
 
-    public Roi (Couleur couleur)
-    {
+    public Roi (Couleur couleur) {
         super(couleur);
     }
 

@@ -2,12 +2,11 @@ package pièces;
 
 import plateau.Plateau;
 
-public abstract class Piece implements IPiece {
+public abstract class Piece implements IPiece{
 
     private Couleur couleur;
 
-    protected Piece (Couleur couleur)
-    {
+    protected Piece (Couleur couleur) {
         this.couleur = couleur;
     }
 
@@ -17,7 +16,7 @@ public abstract class Piece implements IPiece {
     }
 
     protected boolean isCoordonneesExistent(Coordonnees coord) {
-        if ((coord.getLigne() >= 0 && coord.getLigne() < Plateau.tailleMaxX()) && (coord.getColonne() >= 0 && coord.getColonne() < Plateau.tailleMaxY()))
+        if ((coord.getLigne() >= 0 && coord.getLigne() < Plateau.getTailleLigne()) && (coord.getColonne() >= 0 && coord.getColonne() < Plateau.getTailleColonne()))
             return true;
         return false;
     }
