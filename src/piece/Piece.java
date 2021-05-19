@@ -28,30 +28,31 @@ public abstract class Piece implements IPiece {
      * @param couleur la couleur de la pièce
      * @param coord la coordonnée de la pièce
      */
-    public Piece(TypePiece type, Couleur couleur, Coordonnee coord) {
+    protected Piece(TypePiece type, Couleur couleur, Coordonnee coord) {
         this.type = type;
         this.couleur = couleur;
         this.coord = coord;
     }
 
+    @Override
+    public TypePiece getType(){
+        return type;
+    }
 
     @Override
     public Coordonnee getCoordonnee(){
         return coord;
     }
 
-
     @Override
     public Couleur getCouleur(){
         return couleur;
     }
 
-
     @Override
     public void setCoord(Coordonnee coord) {
         this.coord = coord;
     }
-
 
     @Override
     public void deplacer(Coordonnee coord, Echiquier e) {

@@ -1,6 +1,7 @@
 package echiquier;
 
 import piece.Couleur;
+import piece.TypePiece;
 
 import java.util.List;
 
@@ -10,6 +11,12 @@ import java.util.List;
  * @version 1.0
  */
 public interface IPiece {
+
+    /**
+     * Permet de connaître le type de la pièce
+     * @return le type de la pièce
+     */
+    TypePiece getType();
 
     /**
      * Permet de savoir la couleur d'une pièce de l'echequier
