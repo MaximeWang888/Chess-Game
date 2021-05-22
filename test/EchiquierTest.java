@@ -1,4 +1,6 @@
 import static org.junit.Assert.*;
+
+import fabrique.FabriquePiece;
 import org.junit.Test;
 
 import echiquier.Coordonnee;
@@ -17,11 +19,22 @@ import piece.TypePiece;
 public class EchiquierTest {
 
     @Test
+    public void testGetPlateau(){
+        // GIVEN
+        Echiquier e = new Echiquier();
+        Echiquier e1 = new Echiquier();
+
+        // THEN
+        assertEquals(e.getPlateau(), e1.getPlateau());
+    }
+
+    @Test
     public void testEstVide() {
         // GIVEN
         Echiquier echiquier = new Echiquier();
-        echiquier.ajoutPiece(new Roi(TypePiece.ROI, Couleur.BLANC, new Coordonnee(3,3)),
-                new Coordonnee(3,3));
+        Coordonnee c1 = new Coordonnee(3,3);
+        IPiece r1 = new Roi(TypePiece.ROI, Couleur.BLANC, c1);
+        echiquier.ajoutPiece(r1, r1.getCoordonnee());
 
         // THEN
         assertTrue(echiquier.estVide(1,1));
@@ -73,5 +86,31 @@ public class EchiquierTest {
 
         // THEN
         assertEquals(affichage.toString(), echiquier.toString());
+    }
+
+    @Test
+    public void testDeplacer(){
+        // GIVEN
+        Echiquier e = new Echiquier();
+        FabriquePiece fp = new FabriquePiece();
+        IPiece p = fp.creationPiece(TypePiece.TOUR, Couleur.BLANC, new Coordonnee(1, 6));
+        e.ajoutPiece(p, p.getCoordonnee());
+        // WHEN
+        Coordonnee destination = new Coordonnee(5,6);
+        e.deplacer(p, destination);
+        // THEN
+        assertEquals(e.getPiece(destination),p);
+    }
+
+    @Test
+    public void testGetListeDeplacement(){
+        Echiquier e = new Echiquier();
+        FabriquePiece fp = new FabriquePiece();
+        IPiece p = fp.creationPiece(TypePiece.ROI, Couleur.BLANC, new Coordonnee(1, 6));
+        // WHEN
+        e.ajoutPiece(p, p.getCoordonnee());
+        Echiquier e1 = new Echiquier();
+        // THEN
+        assertNotEquals(e.getListeDeplacement(), e1.getListeDeplacement());
     }
 }

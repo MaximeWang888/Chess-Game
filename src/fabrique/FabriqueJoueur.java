@@ -5,6 +5,9 @@ import echiquier.IJoueur;
 import joueur.Humain;
 import joueur.Robot;
 import joueur.TypeJoueur;
+import piece.Couleur;
+
+import java.util.Scanner;
 
 /**
  * Permet de fabriquer un joueur dans le jeu de l'échéquier.
@@ -13,10 +16,10 @@ import joueur.TypeJoueur;
  */
 public class FabriqueJoueur {
 
-    public IJoueur creationJoueur(TypeJoueur type){
+    public IJoueur creationJoueur(TypeJoueur type, Couleur couleur){
         switch (type) {
-            case HUMAIN : return new Humain(type);
-            case ROBOT: return new Robot(type);
+            case HUMAIN : return new Humain(couleur, new Scanner(System.in));
+            case ROBOT: return new Robot(couleur);
             default     : return null;
         }
     }

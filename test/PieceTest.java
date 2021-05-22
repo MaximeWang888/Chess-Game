@@ -1,4 +1,4 @@
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import static org.junit.Assert.*;
 
 import echiquier.Coordonnee;
@@ -17,7 +17,16 @@ import piece.TypePiece;
 public class PieceTest {
 
     @Test
-    void testSetCoord() {
+    public void testGetType(){
+        // GIVEN
+        IPiece roi = new Roi(TypePiece.ROI, Couleur.BLANC, new Coordonnee(1,1));
+        IPiece roi2 = new Roi(TypePiece.ROI, Couleur.NOIR, new Coordonnee(5,5));
+        // THEN
+        assertEquals(roi.getType(), roi2.getType());
+    }
+
+    @Test
+    public void testSetCoord() {
         // GIVEN
         IPiece roi = new Roi(TypePiece.ROI, Couleur.NOIR,new Coordonnee(1,1));
         roi.setCoord(new Coordonnee(2,2));
@@ -26,7 +35,7 @@ public class PieceTest {
     }
 
     @Test
-    void testDeplacer() {
+    public void testDeplacer() {
         // GIVEN
         IPiece r1 = new Roi(TypePiece.ROI, Couleur.BLANC, new Coordonnee(1,1));
         Echiquier echiquier = new Echiquier();
@@ -40,7 +49,7 @@ public class PieceTest {
     }
 
     @Test
-    void testEstAllie() {
+    public void testEstAllie() {
         // GIVEN
         IPiece roiMaxime = new Roi(TypePiece.ROI, Couleur.NOIR,new Coordonnee(1,1));
         IPiece roiFabien = new Roi(TypePiece.ROI, Couleur.NOIR,new Coordonnee(1,1));
@@ -50,7 +59,7 @@ public class PieceTest {
     }
 
     @Test
-    void testGetCouleur() {
+    public void testGetCouleur() {
         // GIVEN
         IPiece roi = new Roi(TypePiece.ROI, Couleur.NOIR,new Coordonnee(1,1));
         // THEN
@@ -58,7 +67,7 @@ public class PieceTest {
     }
 
     @Test
-    void testGetCoordonnee() {
+    public void testGetCoordonnee() {
         // GIVEN
         Coordonnee c = new Coordonnee(1,1);
         IPiece roi = new Roi(TypePiece.ROI, Couleur.NOIR, c);

@@ -1,5 +1,9 @@
 package echiquier;
 
+import joueur.Joueur;
+import piece.Couleur;
+import piece.Piece;
+
 /**
  * Modélise un plateau de jeu dans le jeu de l'échiquier.
  * @author  Fabien Rondan, Maxime Wang, Sebastien Ramirez
@@ -36,7 +40,7 @@ public class Echiquier {
     /**
      * Permet de renvoyer la pièce qui est à la coordonnée x et y
      * @param c La coordonnée à laquelle on prend la pièce
-     * @return le pion aux coordonnee voulu
+     * @return la pièce aux coordonnees voulu
      */
     public IPiece getPiece(Coordonnee c){
         return this.plateau[c.getX()][c.getY()];
@@ -100,7 +104,7 @@ public class Echiquier {
      * @param coordonnee la destination du déplacement
      */
     public void deplacer(IPiece piece, Coordonnee coordonnee){
-        assert (getPiece(piece.getCoordonnee()).equals(piece) && coordonnee.coordValide());
+        assert (getPiece(piece.getCoordonnee()).equals(piece) && coordonnee.isCoordonneeExistante());
         piece.deplacer(coordonnee, this);
     }
 
@@ -110,7 +114,7 @@ public class Echiquier {
      * @param coord les coordonnées où l'on ajoute la piece
      */
     public void ajoutPiece(IPiece piece, Coordonnee coord) {
-        assert (piece != null && coord.coordValide());
+        assert (piece != null && coord.isCoordonneeExistante());
         this.plateau[coord.getX()][coord.getY()] = piece;
     }
 
@@ -130,12 +134,12 @@ public class Echiquier {
      */
     public String getListeDeplacement() {
         StringBuilder str = new StringBuilder();
-        for (int idxLigne = 0; idxLigne < HAUTEUR; idxLigne++) {
-            for (int idxColonne = 0; idxColonne < LARGEUR; idxColonne++) {
-                if (plateau[idxLigne][idxColonne] != null) {
-                    str.append(plateau[idxLigne][idxColonne].toString())
+        for (int x = 0; x < LARGEUR; x++) {
+            for (int y = 0; y < HAUTEUR; y++) {
+                if (plateau[x][y] != null) {
+                    str.append(plateau[x][y].toString())
                             .append(" peut se déplacer en : (format:[COL][LIGNE])\n");
-                    for (Coordonnee destination : plateau[idxLigne][idxColonne].listeDeplacement(plateau)) {
+                    for (Coordonnee destination : plateau[x][y].listeDeplacement(this)) {
                         str.append("[")
                                 .append(destination.getX())
                                 .append("][")
@@ -147,6 +151,60 @@ public class Echiquier {
             }
         }
         return str.toString();
+    }
+
+    public void jouer(IJoueur joueur){
+        joueur.jouer(this);
+    }
+
+    public boolean estPartieTerminee(IJoueur joueur) {
+        // plus de déplacement possible + echec mat
+        if (!existeEncoreDesDeplacements(this, joueur)) {
+
+            if (craintEchec(this, joueur)) {
+
+                System.out.print("Echec et mat ! les ");
+                if (joueur.getCouleur() == Couleur.BLANC)
+                    System.out.print("noirs");
+                else
+                    System.out.print("blancs");
+                System.out.println(" ont gagné.");
+            } else {
+                System.out.println("Pat !");
+            }
+
+            return true;
+        }
+        //plus de déplacement possible
+        return false;
+    }
+
+    private boolean craintEchec(Echiquier echiquier, IJoueur joueur) {
+        return Piece.craintEchec(echiquier, joueur.getCouleur());
+    }
+
+    private boolean existeEncoreDesDeplacements(Echiquier echiquier, IJoueur joueur) {
+        Coordonnee destination = new Coordonnee();
+        for (int x = 0; x < HAUTEUR; x++) {
+
+            for (int y = 0; y < LARGEUR; y++) {
+
+                destination.setX(x);
+                destination.setY(y);
+
+                if (echiquier.getPiece(destination) != null &&
+                        echiquier.getPiece(destination).getCouleur() == joueur.getCouleur()) {
+
+                    for (Coordonnee deplacement : echiquier.getPiece(destination).listeDeplacement(echiquier)) {
+
+                        if (echiquier.getPiece(destination).
+                                isDeplacementPossible(echiquier, deplacement, joueur.getCouleur()))
+                            return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
 
