@@ -75,44 +75,45 @@ public abstract class Piece implements IPiece {
     }
 
     @Override
-    public boolean isDeplacementPossible(Echiquier echiquier, Coordonnee destination, Couleur couleurJoueur){
-        if (!this.getCoordonnee().isCoordonneeExistante())
+    public boolean isDeplacementPossible(Echiquier echiquier, Coordonnee destination, Couleur couleurJoueur, List<Coordonnee> listDeplacementDeMaPiece) {
+        // On est bien dans le plateau et pas en dehors des limites du plateau
+        if (!this.getCoordonnee().isCoordonneeExistante() && this.getCouleur() == couleurJoueur)
             return false;
 
         List<Coordonnee> listeDeplacements;
 
-        if (echiquier.getPiece(destination) != null &&
-                echiquier.getPiece(destination).getCouleur() == couleurJoueur) {
+//        if (echiquier.getPiece(destination) == null &&
+//                echiquier.getPiece(destination).getCouleur() == couleurJoueur) {
 
-            listeDeplacements = verifierListeDeplacement(
-                    echiquier.getPiece(destination).listeDeplacement(echiquier), echiquier, couleurJoueur);
+        listeDeplacements = verifierListeDeplacement(listDeplacementDeMaPiece, echiquier, couleurJoueur);
 
-            for (Coordonnee destinationPossible : listeDeplacements) {
+        for (Coordonnee destinationSûrEtPossible : listeDeplacements) {
 
-                if (destinationPossible.equals(destination))
-                    return true;
-            }
-            return false;
+            if (destinationSûrEtPossible.getX() == destination.getX() && destinationSûrEtPossible.getY() == destination.getY())
+                return true;
         }
-
         return false;
+//        }
+
+//        return false;
     }
 
     private List<Coordonnee> verifierListeDeplacement(List<Coordonnee> listeDeplacement,
                                                       Echiquier echiquier, Couleur couleurJoueur) {
         List<Coordonnee> deplacementSur = new ArrayList<>();
-        IPiece pièceTemporaire;
+        Coordonnee coordDeMonAnciennePiece = this.getCoordonnee();
+//        IPiece pièceTemporaire;
         for(Coordonnee destination : listeDeplacement) {
-
-            pièceTemporaire = echiquier.getPiece(destination);
-
-            this.deplacer(destination, echiquier);
+//            pièceTemporaire = echiquier.getPiece(destination);
+            echiquier.deplacer(this, destination);
+//            this.deplacer(destination, echiquier);
 
             if (!craintEchec(echiquier, couleurJoueur))
                 deplacementSur.add(destination);
 
-            echiquier.getPiece(destination).deplacer(this.getCoordonnee(), echiquier);
-            pièceTemporaire.deplacer(destination, echiquier);
+            echiquier.deplacer(echiquier.getPiece(destination), coordDeMonAnciennePiece);
+//            echiquier.getPiece(destination).deplacer(this.getCoordonnee(), echiquier);
+//            pièceTemporaire.deplacer(destination, echiquier);
         }
         return deplacementSur;
     }

@@ -1,10 +1,14 @@
 package appli;
 
+import echiquier.Coordonnee;
 import echiquier.Echiquier;
 import echiquier.IJoueur;
+import echiquier.IPiece;
 import fabrique.FabriqueJoueur;
+import fabrique.FabriquePiece;
 import joueur.TypeJoueur;
 import piece.Couleur;
+import piece.TypePiece;
 
 /**
  * Modélise l'application lancant une
@@ -19,6 +23,7 @@ public class AppliEchequier {
     public static void main(String[] args) {
 
         Echiquier echiquier = new Echiquier();
+        echiquier = initialiserPieces(echiquier);
         FabriqueJoueur fj = new FabriqueJoueur();
 
         IJoueur joueurPBlanc = fj.creationJoueur(TypeJoueur.HUMAIN, Couleur.BLANC);
@@ -42,5 +47,26 @@ public class AppliEchequier {
             AppliEchequier.estAuBlancDeJouer = true;
             return joueurNoir;
         }
+    }
+
+    private static Echiquier initialiserPieces(Echiquier echiquier){
+        FabriquePiece fp = new FabriquePiece();
+        IPiece roiB = fp.creationPiece(TypePiece.ROI, Couleur.BLANC, new Coordonnee(1,1));
+        IPiece tourB = fp.creationPiece(TypePiece.TOUR, Couleur.BLANC, new Coordonnee(2,5));
+
+        IPiece roiN = fp.creationPiece(TypePiece.ROI, Couleur.NOIR, new Coordonnee(5,7));
+        IPiece tourN = fp.creationPiece(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(2,3));
+        IPiece tourN2 = fp.creationPiece(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(2,6));
+        IPiece tourN3 = fp.creationPiece(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(0,6));
+
+        echiquier.ajoutPiece(roiB, roiB.getCoordonnee());
+        echiquier.ajoutPiece(tourB, tourB.getCoordonnee());
+        echiquier.ajoutPiece(roiN, roiN.getCoordonnee());
+        echiquier.ajoutPiece(tourN, tourN.getCoordonnee());
+        echiquier.ajoutPiece(tourN2, tourN2.getCoordonnee());
+        echiquier.ajoutPiece(tourN3, tourN3.getCoordonnee());
+
+
+        return echiquier;
     }
 }

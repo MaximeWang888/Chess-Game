@@ -4,6 +4,8 @@ import joueur.Joueur;
 import piece.Couleur;
 import piece.Piece;
 
+import java.util.List;
+
 /**
  * Modélise un plateau de jeu dans le jeu de l'échiquier.
  * @author  Fabien Rondan, Maxime Wang, Sebastien Ramirez
@@ -140,11 +142,12 @@ public class Echiquier {
                     str.append(plateau[x][y].toString())
                             .append(" peut se déplacer en : (format:[COL][LIGNE])\n");
                     for (Coordonnee destination : plateau[x][y].listeDeplacement(this)) {
-                        str.append("[")
-                                .append(destination.getX())
-                                .append("][")
-                                .append(destination.getY())
-                                .append("]\n");
+                        if (plateau[x][y].isDeplacementPossible(this, destination, plateau[x][y].getCouleur(), plateau[x][y].listeDeplacement(this)))
+                            str.append("[")
+                                    .append(destination.getX())
+                                    .append("][")
+                                    .append(destination.getY())
+                                    .append("]\n");
                     }
                     str.append("\n");
                 }
@@ -192,13 +195,16 @@ public class Echiquier {
                 destination.setX(x);
                 destination.setY(y);
 
-                if (echiquier.getPiece(destination) != null &&
+                // C'est une pièce du joueur
+                if (!echiquier.estVide(destination.getX(), destination.getY()) &&
                         echiquier.getPiece(destination).getCouleur() == joueur.getCouleur()) {
+                    // Regarde les deplacements possibles de cette pièce
+                    IPiece piece = echiquier.getPiece(destination);
+                    List<Coordonnee> listDeplacement = piece.listeDeplacement(echiquier);
+                    // Pour chaque déplacement de cette pièce
+                    for (Coordonnee deplacement : listDeplacement) {
 
-                    for (Coordonnee deplacement : echiquier.getPiece(destination).listeDeplacement(echiquier)) {
-
-                        if (echiquier.getPiece(destination).
-                                isDeplacementPossible(echiquier, deplacement, joueur.getCouleur()))
+                        if (piece.isDeplacementPossible(echiquier, deplacement, joueur.getCouleur(), listDeplacement))
                             return true;
                     }
                 }

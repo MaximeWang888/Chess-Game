@@ -62,6 +62,6 @@ public interface IPiece {
      * @param destination
      * @return
      */
-    boolean isDeplacementPossible(Echiquier echiquier, Coordonnee destination, Couleur couleurJoueur);
+    boolean isDeplacementPossible(Echiquier echiquier, Coordonnee destination, Couleur couleurJoueur, List<Coordonnee> listDeplacementDeMaPiece);
 
 }

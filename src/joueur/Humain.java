@@ -4,6 +4,7 @@ import echiquier.Coordonnee;
 import echiquier.Echiquier;
 import piece.Couleur;
 
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -32,8 +33,10 @@ public class Humain extends Joueur {
         while (!depPossible) {
             origine = origine.conversionEnCoord(deplacement.substring(0,2));
             destination = destination.conversionEnCoord(deplacement.substring(2,4));
-
-            depPossible = echiquier.getPiece(origine).isDeplacementPossible(echiquier, destination, this.getCouleur());
+            if (!echiquier.estVide(origine.getX(), origine.getY()) && echiquier.getPiece(origine).getCouleur() == this.getCouleur()) {
+                List<Coordonnee> listttt = echiquier.getPiece(origine).listeDeplacement(echiquier);
+                depPossible = echiquier.getPiece(origine).isDeplacementPossible(echiquier, destination, this.getCouleur(), listttt);
+            }
 
             if (!depPossible) {
                 System.out.print(">");

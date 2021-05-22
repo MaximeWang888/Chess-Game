@@ -54,51 +54,77 @@ public class Tour extends Piece{
         return listeDeplacement;
     }
 
-    /**
-     * Permet de connaître toutes les possibilités pour le déplacement de la Tour dans une direction donnée
-     * @param position la coordonnée actuelle de la pièce Tour
-     * @param echequier l'échéquier sur laquelle la Tour se trouve
-     * @param listeDeplacement la liste des possibilités pour le déplacement de la pièce Tour
-     * @param direction la direction du déplacement de la Tour
-     */
-    private void deplacementParDirection(Coordonnee position, Echiquier echequier,
+//    /**
+//     * Permet de connaître toutes les possibilités pour le déplacement de la Tour dans une direction donnée
+//     * @param position la coordonnée actuelle de la pièce Tour
+//     * @param echequier l'échéquier sur laquelle la Tour se trouve
+//     * @param listeDeplacement la liste des possibilités pour le déplacement de la pièce Tour
+//     * @param direction la direction du déplacement de la Tour
+//     */
+//    private void deplacementParDirection(Coordonnee position, Echiquier echequier,
+//                                         List<Coordonnee> listeDeplacement, Direction direction) {
+//        boolean indexOutOfBounds = false;
+//        int variationX = variationX(position.getX(), direction);
+//        int variationY = variationY(position.getY(), direction);
+//
+//        Coordonnee destination = new Coordonnee(variationX, variationY);
+//
+//        while (!indexOutOfBounds){
+//            indexOutOfBounds = aide(destination, echequier, listeDeplacement, direction, variationX, variationY);
+//        }
+//
+//    }
+//
+//    private boolean aide(Coordonnee destination, Echiquier echequier, List<Coordonnee> listeDeplacement,
+//                         Direction direction, int variationX, int variationY){
+//        while (destination.isCoordonneeExistante()){
+//            if (variationX == this.getCoordonnee().getX() && variationY == this.getCoordonnee().getY())
+//                return true;
+//            while (echequier.getPiece(new Coordonnee(variationX, variationY)) == null){
+//                listeDeplacement.add(destination);
+//
+//                variationX = variationX(variationX, direction);
+//                variationY = variationY(variationY, direction);
+//                if (listeDeplacement.get(listeDeplacement.size() - 1).getX() == variationX &&
+//                        listeDeplacement.get(listeDeplacement.size() - 1).getY() == variationY)
+//                    return true;
+//
+//                if (variationX >= MINIMUM && variationX < LARGEUR && variationY >= MINIMUM && variationY < HAUTEUR)
+//                    destination = new Coordonnee(variationX, variationY);
+//                else
+//                    return true;
+//            }
+//            return true;
+//        }
+//        return false;
+//    }
+
+    private void deplacementParDirection(Coordonnee position, Echiquier echiquier,
                                          List<Coordonnee> listeDeplacement, Direction direction) {
-        boolean indexOutOfBounds = false;
-        int variationX = variationX(position.getX(), direction);
-        int variationY = variationY(position.getY(), direction);
+        int varX = variationX(position.getX(), direction);
+        int varY = variationY(position.getY(), direction);
 
-        Coordonnee destination = new Coordonnee(variationX, variationY);
+        Coordonnee destination = new Coordonnee(varX, varY);
+        boolean aDoublon = false;
 
-        while (!indexOutOfBounds){
-            indexOutOfBounds = aide(destination, echequier, listeDeplacement, direction, variationX, variationY);
+        while (destination.isCoordonneeExistante() && echiquier.getPiece(destination) == null && !aDoublon) {
+            listeDeplacement.add(destination);
+
+            varX = variationX(varX, direction);
+            varY = variationY(varY, direction);
+            if (listeDeplacement.get(listeDeplacement.size() - 1 ).getX() == varX &&
+                    listeDeplacement.get(listeDeplacement.size() - 1).getY() == varY)
+                aDoublon = true;
+
+            destination = new Coordonnee(varX, varY);
         }
 
-    }
-
-    private boolean aide(Coordonnee destination, Echiquier echequier, List<Coordonnee> listeDeplacement,
-                         Direction direction, int variationX, int variationY){
-        while (destination.isCoordonneeExistante()){
-            if (variationX == this.getCoordonnee().getX() && variationY == this.getCoordonnee().getY())
-                return true;
-            while (echequier.getPiece(new Coordonnee(variationX, variationY)) == null){
-                listeDeplacement.add(destination);
-
-                variationX = variationX(variationX, direction);
-                variationY = variationY(variationY, direction);
-                if (listeDeplacement.get(listeDeplacement.size() - 1).getX() == variationX &&
-                        listeDeplacement.get(listeDeplacement.size() - 1).getY() == variationY)
-                    return true;
-
-                if (variationX >= MINIMUM && variationX < LARGEUR && variationY >= MINIMUM && variationY < HAUTEUR)
-                    destination = new Coordonnee(variationX, variationY);
-                else
-                    return true;
-            }
-            return true;
+        if (destination.isCoordonneeExistante()){
+            if (!echiquier.estVide(destination.getX(), destination.getY()))
+                if (echiquier.getPiece(destination).getCouleur() != this.getCouleur())
+                    listeDeplacement.add(destination);
         }
-        return false;
     }
-
     /**
      * Retourne les modifications des coordonnées (en X) de la pièce Tour pour une direction donnée
      * @param variationX la coordonnée en X de la pièce Tour
