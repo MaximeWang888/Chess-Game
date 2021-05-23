@@ -1,8 +1,7 @@
+import echiquier.Coordonnee;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-
-import echiquier.Coordonnee;
 
 /**
  * Tests unitaires sur la classe Coordonnee dans le jeu de l'échiquier.
@@ -32,11 +31,11 @@ public class CoordonneeTest {
     }
 
     @Test
-    public void testCoordValide() {
+    public void testIsCoordonneeExistante() {
         // GIVEN
         Coordonnee c = new Coordonnee(2,3);
         // THEN
-        assertTrue(c.coordValide());
+        assertTrue(c.isCoordonneeExistante());
         AssertionError error = Assertions.assertThrows(AssertionError.class, () -> { new Coordonnee(-1,-1); });
         Assertions.assertEquals("La coordonnée dépasse la dimension de l'échiquier.", error.getMessage());
     }

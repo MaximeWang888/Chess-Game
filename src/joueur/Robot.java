@@ -1,5 +1,8 @@
 package joueur;
 
+import echiquier.Echiquier;
+import piece.Couleur;
+
 /**
  * Modélise un robot dans le jeu de l'échiquier.
  * @author  Fabien Rondan, Maxime Wang, Sebastien Ramirez
@@ -7,7 +10,12 @@ package joueur;
  */
 public class Robot extends Joueur {
 
-    public Robot(TypeJoueur type) {
-        super(type);
+    public Robot(Couleur couleur) {
+        super(couleur);
+    }
+
+    @Override
+    public String coupJouer(Echiquier echiquier) {
+        return null;
     }
 }

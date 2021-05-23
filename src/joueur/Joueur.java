@@ -1,6 +1,9 @@
 package joueur;
 
+import echiquier.Coordonnee;
+import echiquier.Echiquier;
 import echiquier.IJoueur;
+import piece.Couleur;
 
 /**
  * Modélise un joueur dans le jeu d'Echecs.
@@ -9,11 +12,21 @@ import echiquier.IJoueur;
  */
 public abstract class Joueur implements IJoueur {
 
-    /** Le type du joueur */
-    private TypeJoueur type;
+    private Couleur couleur;
 
-    public Joueur(TypeJoueur type) {
-        this.type = type;
+    public Joueur(Couleur couleur) {
+        this.couleur = couleur;
+    }
+
+    @Override
+    public Couleur getCouleur(){
+        return couleur;
+    }
+
+    @Override
+    public void jouer(Echiquier echiquier){
+        String coup = this.coupJouer(echiquier);
+        System.out.println("Le joueur " + this.getCouleur() + " a joué : " + coup);
     }
 
     /**

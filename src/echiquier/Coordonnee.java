@@ -35,6 +35,14 @@ public class Coordonnee {
         this(0,0);
     }
 
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     /**
      * Retourne la colonne de la pièce.
      * @return La colonne de la pièce.
@@ -52,11 +60,11 @@ public class Coordonnee {
     }
 
     /**
-     * Permet de savoir si les coordonnée son des coordonnées valide sur le plateau
+     * Permet de savoir si les coordonnées sont des coordonnées valide sur le plateau
      * @return True si les coordonnées son valide sinon return False
      */
-    public boolean coordValide(){
-        return this.y >= MINIMUM && this.y < Echiquier.LARGEUR && this.x >= MINIMUM && this.x < HAUTEUR;
+    public boolean isCoordonneeExistante(){
+        return (this.x >= MINIMUM && this.x < Echiquier.HAUTEUR) && (this.y >= MINIMUM && this.y < Echiquier.LARGEUR);
     }
 
     /**

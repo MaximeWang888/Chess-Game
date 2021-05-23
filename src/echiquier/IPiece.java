@@ -48,7 +48,7 @@ public interface IPiece {
      * @param echiquier l'échequier sur lequel la pièce se trouvant
      * @return une liste des possibilités de déplacements d'une pièce
      */
-    List<Coordonnee> listeDeplacement(IPiece[][] echiquier);
+    List<Coordonnee> listeDeplacement(Echiquier echiquier);
 
     /**
      * Permet de savoir si la pièce sur l'échequier est à nous
@@ -56,4 +56,12 @@ public interface IPiece {
      * @return True si la pièce est une pièce alliée, False dans le cas contraire.
      */
     boolean estAllie(IPiece piece);
+
+    /**
+     * Permet de savoir si le déplacement de la pièce la destination donnée est possible ou non
+     * @param destination
+     * @return
+     */
+    boolean isDeplacementPossible(Echiquier echiquier, Coordonnee destination, Couleur couleurJoueur, List<Coordonnee> listDeplacementDeMaPiece);
+
 }

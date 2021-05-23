@@ -1,7 +1,8 @@
 import static org.junit.Assert.*;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import fabrique.FabriquePiece;
+import joueur.Humain;
+import joueur.Robot;
 import org.junit.Test;
 
 import echiquier.Coordonnee;
@@ -112,6 +113,6 @@ public class EchiquierTest {
         e.ajoutPiece(p, p.getCoordonnee());
         Echiquier e1 = new Echiquier();
         // THEN
-        assertNotEquals(e.getListeDeplacement(), e1.getListeDeplacement());
+        assertNotEquals(e.getListeDeplacement(new Robot(Couleur.BLANC)), e1.getListeDeplacement(new Robot(Couleur.NOIR)));
     }
 }
