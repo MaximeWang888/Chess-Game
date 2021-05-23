@@ -98,27 +98,32 @@ public abstract class Piece implements IPiece {
 //        return false;
     }
 
-    private List<Coordonnee> verifierListeDeplacement(List<Coordonnee> listeDeplacement,
+    private List<Coordonnee> verifierListeDeplacement(List<Coordonnee> listDeplacementDeMaPiece,
                                                       Echiquier echiquier, Couleur couleurJoueur) {
         List<Coordonnee> deplacementSur = new ArrayList<>();
         Coordonnee coordDeMonAnciennePiece = this.getCoordonnee();
 //        IPiece pièceTemporaire;
-        for(Coordonnee destination : listeDeplacement) {
+        for(Coordonnee destination : listDeplacementDeMaPiece) {
 //            pièceTemporaire = echiquier.getPiece(destination);
-            echiquier.deplacer(this, destination);
+//            echiquier.deplacer(this, destination);
 //            this.deplacer(destination, echiquier);
-
-            if (!craintEchec(echiquier, couleurJoueur))
+            // si je suis une autre piece qu'un roi
+            // je ne suis pas un roi ou si je suis un
+            boolean isEchec = craintEchec(echiquier, couleurJoueur, destination);
+            if (!this.getType().equals(TypePiece.ROI) || !isEchec)
+            {
                 deplacementSur.add(destination);
+            }
 
-            echiquier.deplacer(echiquier.getPiece(destination), coordDeMonAnciennePiece);
+
+//            echiquier.deplacer(echiquier.getPiece(destination), coordDeMonAnciennePiece);
 //            echiquier.getPiece(destination).deplacer(this.getCoordonnee(), echiquier);
 //            pièceTemporaire.deplacer(destination, echiquier);
         }
         return deplacementSur;
     }
 
-    public static boolean craintEchec(Echiquier echiquier, Couleur couleurJoueur) {
+    public static boolean craintEchec(Echiquier echiquier, Couleur couleurJoueur, Coordonnee destinationPPP) {
 
         IPiece roi = trouverRoi(echiquier, couleurJoueur);
         assert (roi != null);
@@ -129,12 +134,12 @@ public abstract class Piece implements IPiece {
 
                 if (echiquier.getPiece(destination) != null &&
                         echiquier.getPiece(destination).getCouleur() != roi.getCouleur()) {
-
+                    // Liste de déplacement des pièces ennemis
+                    List<Coordonnee> l = echiquier.getPiece(destination).listeDeplacement(echiquier);
                     //Pour chaque piece adverse on verifie ses déplacements possibles
-                    for (Coordonnee deplacement : echiquier.getPiece(destination).listeDeplacement(echiquier)) {
+                    for (Coordonnee deplacement : l) {
 
-                        //Verifier si une peut se déplacer aux coordonnée du roi adverse
-                        if (deplacement.equals(roi.getCoordonnee()))
+                        if (deplacement.getX() == destinationPPP.getX() && deplacement.getY() == destinationPPP.getY())
                             return true;
                     }
                 }

@@ -2,14 +2,12 @@ package piece;
 
 import echiquier.Coordonnee;
 import echiquier.Echiquier;
-import echiquier.IPiece;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static echiquier.Coordonnee.MINIMUM;
 import static echiquier.Echiquier.HAUTEUR;
-import static echiquier.Echiquier.LARGEUR;
 
 /**
  * Modélise une tour dans le jeu de l'échiquier.
@@ -119,10 +117,14 @@ public class Tour extends Piece{
             destination = new Coordonnee(varX, varY);
         }
 
-        if (destination.isCoordonneeExistante()){
-            if (!echiquier.estVide(destination.getX(), destination.getY()))
-                if (echiquier.getPiece(destination).getCouleur() != this.getCouleur())
+        if (destination.isCoordonneeExistante()) {
+            if (!echiquier.estVide(destination.getX(), destination.getY())){
+                if (echiquier.getPiece(destination).getCouleur() != this.getCouleur()) {
                     listeDeplacement.add(destination);
+                    if (echiquier.getPiece(destination).getType().equals(TypePiece.ROI))
+                        deplacementParDirection(destination, echiquier, listeDeplacement, direction);
+                }
+            }
         }
     }
     /**

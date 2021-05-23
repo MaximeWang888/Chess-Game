@@ -32,8 +32,6 @@ public class AppliEchequier {
         IJoueur joueur = changerDeJoueur(joueurPBlanc, joueurPNoir, estAuBlancDeJouer);
 
         while (!echiquier.estPartieTerminee(joueur)){
-            System.out.println(echiquier);
-            System.out.println("Au tour des " + joueur.getCouleur() + " de jouer");
             echiquier.jouer(joueur);
             joueur = changerDeJoueur(joueurPBlanc, joueurPNoir, estAuBlancDeJouer);
         }
@@ -52,11 +50,11 @@ public class AppliEchequier {
     private static Echiquier initialiserPieces(Echiquier echiquier){
         FabriquePiece fp = new FabriquePiece();
         IPiece roiB = fp.creationPiece(TypePiece.ROI, Couleur.BLANC, new Coordonnee(1,1));
-        IPiece tourB = fp.creationPiece(TypePiece.TOUR, Couleur.BLANC, new Coordonnee(2,5));
+        IPiece tourB = fp.creationPiece(TypePiece.TOUR, Couleur.BLANC, new Coordonnee(5,2));
 
         IPiece roiN = fp.creationPiece(TypePiece.ROI, Couleur.NOIR, new Coordonnee(5,7));
         IPiece tourN = fp.creationPiece(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(2,3));
-        IPiece tourN2 = fp.creationPiece(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(2,6));
+        IPiece tourN2 = fp.creationPiece(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(1,6));
         IPiece tourN3 = fp.creationPiece(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(0,6));
 
         echiquier.ajoutPiece(roiB, roiB.getCoordonnee());

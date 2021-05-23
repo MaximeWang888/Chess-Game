@@ -6,6 +6,8 @@ import piece.Piece;
 
 import java.util.List;
 
+import static piece.Piece.trouverRoi;
+
 /**
  * Modélise un plateau de jeu dans le jeu de l'échiquier.
  * @author  Fabien Rondan, Maxime Wang, Sebastien Ramirez
@@ -134,14 +136,15 @@ public class Echiquier {
      * autorisés de toutes les pièces sur l'échequier.
      * @return une liste de déplacement autorisé des pièces sur l'échequier
      */
-    public String getListeDeplacement() {
+    public String getListeDeplacement(IJoueur joueur) {
         StringBuilder str = new StringBuilder();
         for (int x = 0; x < LARGEUR; x++) {
             for (int y = 0; y < HAUTEUR; y++) {
-                if (plateau[x][y] != null) {
+                if (plateau[x][y] != null && joueur.getCouleur() == plateau[x][y].getCouleur()) {
                     str.append(plateau[x][y].toString())
                             .append(" peut se déplacer en : (format:[COL][LIGNE])\n");
-                    for (Coordonnee destination : plateau[x][y].listeDeplacement(this)) {
+                    List<Coordonnee> l = plateau[x][y].listeDeplacement(this);
+                    for (Coordonnee destination : l) {
                         if (plateau[x][y].isDeplacementPossible(this, destination, plateau[x][y].getCouleur(), plateau[x][y].listeDeplacement(this)))
                             str.append("[")
                                     .append(destination.getX())
@@ -160,30 +163,61 @@ public class Echiquier {
         joueur.jouer(this);
     }
 
+    /**
+     * La partie est terminée que si la liste des déplacements du roi est vide
+     * @param joueur le joueur qui joue
+     * @return TRUE ssi la liste des déplacements du roi est vide, FALSE dans le cas contraire
+     */
     public boolean estPartieTerminee(IJoueur joueur) {
-        // plus de déplacement possible + echec mat
-        if (!existeEncoreDesDeplacements(this, joueur)) {
-
-            if (craintEchec(this, joueur)) {
-
-                System.out.print("Echec et mat ! les ");
-                if (joueur.getCouleur() == Couleur.BLANC)
-                    System.out.print("noirs");
-                else
-                    System.out.print("blancs");
-                System.out.println(" ont gagné.");
-            } else {
-                System.out.println("Pat !");
-            }
-
+        System.out.println(this.getListeDeplacement(joueur));
+        System.out.println(this);
+        System.out.println("Au tour des " + joueur.getCouleur() + " de jouer");
+        IPiece roi = trouverRoi(this, joueur.getCouleur());
+        assert roi != null;
+        if (roi.listeDeplacement(this).isEmpty())
+        {
             return true;
+        }else{
+            return false;
         }
+
+        // plus de déplacement possible + echec mat
+//        if (!existeEncoreDesDeplacements(this, joueur)) {
+
+//        if (craintEchec(this, joueur)) {
+//
+//            System.out.print("Echec et mat ! les ");
+//            if (joueur.getCouleur() == Couleur.BLANC)
+//                System.out.print("noirs");
+//            else
+//                System.out.print("blancs");
+//            System.out.println(" ont gagné.");
+//            return true;
+//        } else {
+//            System.out.println("Pat !");
+//            return true;
+//        }
+        //        }
         //plus de déplacement possible
-        return false;
+//        return false;
     }
 
     private boolean craintEchec(Echiquier echiquier, IJoueur joueur) {
-        return Piece.craintEchec(echiquier, joueur.getCouleur());
+        for (int x = 0; x < HAUTEUR; x++) {
+
+            for (int y = 0; y < LARGEUR; y++) {
+                Coordonnee destination = new Coordonnee(x, y);
+                if (echiquier.getPiece(destination) != null &&
+                        echiquier.getPiece(destination).getCouleur() != joueur.getCouleur()) {
+                    //Pour chaque piece adverse on verifie ses déplacements possibles
+                    for (Coordonnee deplacement : echiquier.getPiece(destination).listeDeplacement(echiquier)) {
+
+                        return Piece.craintEchec(echiquier, joueur.getCouleur(), deplacement);
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private boolean existeEncoreDesDeplacements(Echiquier echiquier, IJoueur joueur) {
