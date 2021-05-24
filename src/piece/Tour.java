@@ -8,6 +8,7 @@ import java.util.List;
 
 import static echiquier.Coordonnee.MINIMUM;
 import static echiquier.Echiquier.HAUTEUR;
+import static echiquier.Echiquier.LARGEUR;
 
 /**
  * Modélise une tour dans le jeu de l'échiquier.
@@ -121,11 +122,16 @@ public class Tour extends Piece{
             if (!echiquier.estVide(destination.getX(), destination.getY())){
                 if (echiquier.getPiece(destination).getCouleur() != this.getCouleur()) {
                     listeDeplacement.add(destination);
-                    if (echiquier.getPiece(destination).getType().equals(TypePiece.ROI))
+                    if (echiquier.getPiece(destination).getType().equals(TypePiece.ROI) && !coordonneeAlaLimiteDuPlateau(destination))
                         deplacementParDirection(destination, echiquier, listeDeplacement, direction);
                 }
             }
         }
+    }
+
+    private boolean coordonneeAlaLimiteDuPlateau(Coordonnee destination){
+        return destination.getX() == LARGEUR - 1 || destination.getY() == HAUTEUR - 1 || destination.getX() == MINIMUM
+                || destination.getY() == MINIMUM;
     }
     /**
      * Retourne les modifications des coordonnées (en X) de la pièce Tour pour une direction donnée

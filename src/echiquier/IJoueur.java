@@ -15,7 +15,7 @@ public interface IJoueur {
      */
     Couleur getCouleur();
 
-    void jouer(Echiquier echiquier);
+    void jouer(Echiquier echiquier, boolean attentionRoiPresqueEnEchec);
 
-    String coupJouer(Echiquier echiquier);
+    String coupJouer(Echiquier echiquier, boolean attentionRoiPresqueEnEchec);
 }

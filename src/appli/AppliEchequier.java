@@ -8,6 +8,7 @@ import fabrique.FabriqueJoueur;
 import fabrique.FabriquePiece;
 import joueur.TypeJoueur;
 import piece.Couleur;
+import piece.Piece;
 import piece.TypePiece;
 
 /**
@@ -30,9 +31,10 @@ public class AppliEchequier {
         IJoueur joueurPNoir = fj.creationJoueur(TypeJoueur.HUMAIN, Couleur.NOIR);
 
         IJoueur joueur = changerDeJoueur(joueurPBlanc, joueurPNoir, estAuBlancDeJouer);
-
+        boolean attentionRoiPresqueEnEchec = false;
         while (!echiquier.estPartieTerminee(joueur)){
-            echiquier.jouer(joueur);
+            attentionRoiPresqueEnEchec = echiquier.craintEchec(Piece.trouverRoi(echiquier, joueur.getCouleur()));
+            echiquier.jouer(joueur, attentionRoiPresqueEnEchec);
             joueur = changerDeJoueur(joueurPBlanc, joueurPNoir, estAuBlancDeJouer);
         }
     }
@@ -49,13 +51,13 @@ public class AppliEchequier {
 
     private static Echiquier initialiserPieces(Echiquier echiquier){
         FabriquePiece fp = new FabriquePiece();
-        IPiece roiB = fp.creationPiece(TypePiece.ROI, Couleur.BLANC, new Coordonnee(1,1));
+        IPiece roiB = fp.creationPiece(TypePiece.ROI, Couleur.BLANC, new Coordonnee(3,5));
         IPiece tourB = fp.creationPiece(TypePiece.TOUR, Couleur.BLANC, new Coordonnee(5,2));
 
-        IPiece roiN = fp.creationPiece(TypePiece.ROI, Couleur.NOIR, new Coordonnee(5,7));
-        IPiece tourN = fp.creationPiece(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(2,3));
+        IPiece roiN = fp.creationPiece(TypePiece.ROI, Couleur.NOIR, new Coordonnee(5,6));
+        IPiece tourN = fp.creationPiece(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(0,3));
         IPiece tourN2 = fp.creationPiece(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(1,6));
-        IPiece tourN3 = fp.creationPiece(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(0,6));
+        IPiece tourN3 = fp.creationPiece(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(7,1));
 
         echiquier.ajoutPiece(roiB, roiB.getCoordonnee());
         echiquier.ajoutPiece(tourB, tourB.getCoordonnee());
@@ -67,4 +69,6 @@ public class AppliEchequier {
 
         return echiquier;
     }
+
+
 }

@@ -24,8 +24,8 @@ public abstract class Joueur implements IJoueur {
     }
 
     @Override
-    public void jouer(Echiquier echiquier){
-        String coup = this.coupJouer(echiquier);
+    public void jouer(Echiquier echiquier, boolean attentionRoiPresqueEnEchec){
+        String coup = this.coupJouer(echiquier, attentionRoiPresqueEnEchec);
         System.out.println("Le joueur " + this.getCouleur() + " a joué : " + coup);
     }
 

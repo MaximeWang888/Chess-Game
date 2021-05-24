@@ -141,6 +141,9 @@ public abstract class Piece implements IPiece {
 
                         if (deplacement.getX() == destinationPPP.getX() && deplacement.getY() == destinationPPP.getY())
                             return true;
+//                        if (deplacement.getX() == roi.getCoordonnee().getX() && deplacement.getY() == roi.getCoordonnee().getY() &&
+//                                !(roi.listeDeplacement(echiquier).size() == 0))
+//                            return true;
                     }
                 }
             }

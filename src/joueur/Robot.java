@@ -15,7 +15,7 @@ public class Robot extends Joueur {
     }
 
     @Override
-    public String coupJouer(Echiquier echiquier) {
+    public String coupJouer(Echiquier echiquier, boolean attentionRoiPresqueEnEchec) {
         return null;
     }
 }

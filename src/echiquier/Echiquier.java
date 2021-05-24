@@ -159,8 +159,8 @@ public class Echiquier {
         return str.toString();
     }
 
-    public void jouer(IJoueur joueur){
-        joueur.jouer(this);
+    public void jouer(IJoueur joueur, boolean attentionRoiPresqueEnEchec){
+        joueur.jouer(this, attentionRoiPresqueEnEchec);
     }
 
     /**
@@ -169,18 +169,30 @@ public class Echiquier {
      * @return TRUE ssi la liste des déplacements du roi est vide, FALSE dans le cas contraire
      */
     public boolean estPartieTerminee(IJoueur joueur) {
-        System.out.println(this.getListeDeplacement(joueur));
+//        System.out.println(this.getListeDeplacement(joueur));
         System.out.println(this);
         System.out.println("Au tour des " + joueur.getCouleur() + " de jouer");
         IPiece roi = trouverRoi(this, joueur.getCouleur());
         assert roi != null;
-        if (roi.listeDeplacement(this).isEmpty())
-        {
-            return true;
-        }else{
-            return false;
+        List<Coordonnee> listDRoi = roi.listeDeplacement(this);
+        if (this.craintEchec(roi))
+            System.out.println("attention ton roi en danger \n");
+        for (Coordonnee destination: listDRoi) {
+            if (roi.isDeplacementPossible(this, destination, joueur.getCouleur(), listDRoi)) {
+                return false;
+            }
         }
-
+        if (this.craintEchec(roi)) {
+            System.out.print("Echec et mat ! les ");
+            if (joueur.getCouleur() == Couleur.BLANC)
+                System.out.print("noirs");
+            else
+                System.out.print("blancs");
+            System.out.println(" ont gagné.");
+            return true;
+        }
+        System.out.println("Pat !");
+        return true;
         // plus de déplacement possible + echec mat
 //        if (!existeEncoreDesDeplacements(this, joueur)) {
 
@@ -202,17 +214,21 @@ public class Echiquier {
 //        return false;
     }
 
-    private boolean craintEchec(Echiquier echiquier, IJoueur joueur) {
+    public boolean craintEchec(IPiece roi) {
         for (int x = 0; x < HAUTEUR; x++) {
 
             for (int y = 0; y < LARGEUR; y++) {
                 Coordonnee destination = new Coordonnee(x, y);
-                if (echiquier.getPiece(destination) != null &&
-                        echiquier.getPiece(destination).getCouleur() != joueur.getCouleur()) {
-                    //Pour chaque piece adverse on verifie ses déplacements possibles
-                    for (Coordonnee deplacement : echiquier.getPiece(destination).listeDeplacement(echiquier)) {
 
-                        return Piece.craintEchec(echiquier, joueur.getCouleur(), deplacement);
+                if (getPiece(destination) != null &&
+                        getPiece(destination).getCouleur() != roi.getCouleur()) {
+                    // Liste de déplacement des pièces ennemis
+                    List<Coordonnee> l = getPiece(destination).listeDeplacement(this);
+                    //Pour chaque piece adverse on verifie ses déplacements possibles
+                    for (Coordonnee deplacement : l) {
+
+                        if (deplacement.getX() == roi.getCoordonnee().getX() && deplacement.getY() == roi.getCoordonnee().getY())
+                            return true;
                     }
                 }
             }
