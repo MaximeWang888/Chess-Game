@@ -15,7 +15,21 @@ public interface IJoueur {
      */
     Couleur getCouleur();
 
-    void jouer(Echiquier echiquier);
+    /**
+     * Permet de jouer un coup
+     * @param echiquier
+     * @param attentionRoiPresqueEnEchec
+     * @return
+     */
+    String jouer(Echiquier echiquier, boolean attentionRoiPresqueEnEchec);
 
-    String coupJouer(Echiquier echiquier);
+    /**
+     * Le coup jouait par le joueur
+     * @param echiquier
+     * @param attentionRoiPresqueEnEchec
+     * @return
+     */
+    String coupJouer(Echiquier echiquier, boolean attentionRoiPresqueEnEchec);
+
+
 }

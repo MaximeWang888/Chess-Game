@@ -101,6 +101,8 @@ public class Coordonnee {
         return coordonnee;
     }
 
+
+
     /**
      * Affiche les coordonnées
      * @return les coordonnées
@@ -110,4 +112,33 @@ public class Coordonnee {
         return "Coordonnee{" + "colonne=" + x + ", ligne=" + y + '}';
     }
 
+    /**
+     * Convertie une coordonée en chaine de caractere
+     * @return la coordonnee sous le format valide ex: b5f6
+     */
+    public String conversionEnString() {
+        String coordonnee = "";
+
+        switch (this.getX()){
+            case 0: coordonnee += 'a';
+                break;
+            case 1: coordonnee += 'b';
+                break;
+            case 2: coordonnee += 'c';
+                break;
+            case 3: coordonnee += 'd';
+                break;
+            case 4: coordonnee += 'e';
+                break;
+            case 5: coordonnee += 'f';
+                break;
+            case 6: coordonnee += 'g';
+                break;
+            case 7: coordonnee += 'h';
+                break;
+        }
+        coordonnee += HAUTEUR - this.getY();
+
+        return coordonnee;
+    }
 }

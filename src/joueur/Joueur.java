@@ -12,6 +12,7 @@ import piece.Couleur;
  */
 public abstract class Joueur implements IJoueur {
 
+    /* */
     private Couleur couleur;
 
     public Joueur(Couleur couleur) {
@@ -24,9 +25,10 @@ public abstract class Joueur implements IJoueur {
     }
 
     @Override
-    public void jouer(Echiquier echiquier){
-        String coup = this.coupJouer(echiquier);
+    public String jouer(Echiquier echiquier, boolean attentionRoiPresqueEnEchec){
+        String coup = this.coupJouer(echiquier, attentionRoiPresqueEnEchec);
         System.out.println("Le joueur " + this.getCouleur() + " a joué : " + coup);
+        return coup;
     }
 
     /**
@@ -42,4 +44,6 @@ public abstract class Joueur implements IJoueur {
     public void proposerNulle(){
 
     }
+
+
 }

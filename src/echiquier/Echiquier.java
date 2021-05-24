@@ -1,12 +1,11 @@
 package echiquier;
 
-import joueur.Joueur;
 import piece.Couleur;
-import piece.Piece;
+import piece.TypePiece;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import static piece.Piece.trouverRoi;
+import java.util.Scanner;
 
 /**
  * Modélise un plateau de jeu dans le jeu de l'échiquier.
@@ -145,7 +144,8 @@ public class Echiquier {
                             .append(" peut se déplacer en : (format:[COL][LIGNE])\n");
                     List<Coordonnee> l = plateau[x][y].listeDeplacement(this);
                     for (Coordonnee destination : l) {
-                        if (plateau[x][y].isDeplacementPossible(this, destination, plateau[x][y].getCouleur(), plateau[x][y].listeDeplacement(this)))
+                        if (plateau[x][y].isDeplacementPossible(this, destination, plateau[x][y].getCouleur(),
+                                plateau[x][y].listeDeplacement(this)))
                             str.append("[")
                                     .append(destination.getX())
                                     .append("][")
@@ -159,8 +159,14 @@ public class Echiquier {
         return str.toString();
     }
 
-    public void jouer(IJoueur joueur){
-        joueur.jouer(this);
+    /**
+     * Permet de jouer un coup pour le joueur passé en paramètre
+     * @param joueur le joueur qui joue
+     * @param attentionRoiPresqueEnEchec le boolean nous permettant de savoir si notre roi
+     *                                   est en position d'échec ou non
+     */
+    public String jouer(IJoueur joueur, boolean attentionRoiPresqueEnEchec){
+        return joueur.jouer(this, attentionRoiPresqueEnEchec);
     }
 
     /**
@@ -168,53 +174,60 @@ public class Echiquier {
      * @param joueur le joueur qui joue
      * @return TRUE ssi la liste des déplacements du roi est vide, FALSE dans le cas contraire
      */
-    public boolean estPartieTerminee(IJoueur joueur) {
-//        System.out.println(this.getListeDeplacement(joueur));
+    public boolean estPartieTerminee(IJoueur joueur, String coup) {
+        // Affichage du jeu
         System.out.println(this);
         System.out.println("Au tour des " + joueur.getCouleur() + " de jouer");
-        IPiece roi = trouverRoi(this, joueur.getCouleur());
+        if (coup.equals("abandonner"))
+            return true;
+        if (coup.equals("proposerNulle"))
+        {
+            System.out.println("Entrez 'oui' ou 'non' : ");
+            System.out.print("> ");
+            Scanner sc = new Scanner(System.in);
+            String réponse = sc.nextLine();
+            while (!(réponse.equals("oui") || réponse.equals("non"))){
+                System.out.print("> ");
+                réponse = sc.nextLine();
+                if (réponse.equals("oui")){
+                    System.out.println("La partie est déclarée nulle");
+                    return true;
+                }else if (réponse.equals("non")){
+                    System.out.println("La partie continue");
+                    return false;
+                }
+            }
+        }
+        IPiece roi = this.trouverRoi(joueur.getCouleur());
         assert roi != null;
         List<Coordonnee> listDRoi = roi.listeDeplacement(this);
+        // Verifie que l'on peut toujours se deplacer avec le roi du joueur
         for (Coordonnee destination: listDRoi) {
             if (roi.isDeplacementPossible(this, destination, joueur.getCouleur(), listDRoi)) {
                 return false;
             }
         }
-        for (Coordonnee destination: listDRoi) {
-            if (this.craintEchec(roi)) {
-                System.out.print("Echec et mat ! les ");
-                if (joueur.getCouleur() == Couleur.BLANC)
-                    System.out.print("noirs");
-                else
-                    System.out.print("blancs");
-                System.out.println(" ont gagné.");
-                return true;
-            }
+        // Si le roi ne peut plus se déplacer du tout alors on vérifie si il est en échec et mat
+        if (this.craintEchec(roi)) {
+            System.out.print("Echec et mat ! les ");
+            if (joueur.getCouleur() == Couleur.BLANC)
+                System.out.print("noirs");
+            else
+                System.out.print("blancs");
+            System.out.println(" ont gagné.");
+            return true;
         }
+        // Si le roi n'est pas en échec et mat, dans ce cas là, il est en Pat !
         System.out.println("Pat !");
         return true;
-        // plus de déplacement possible + echec mat
-//        if (!existeEncoreDesDeplacements(this, joueur)) {
-
-//        if (craintEchec(this, joueur)) {
-//
-//            System.out.print("Echec et mat ! les ");
-//            if (joueur.getCouleur() == Couleur.BLANC)
-//                System.out.print("noirs");
-//            else
-//                System.out.print("blancs");
-//            System.out.println(" ont gagné.");
-//            return true;
-//        } else {
-//            System.out.println("Pat !");
-//            return true;
-//        }
-        //        }
-        //plus de déplacement possible
-//        return false;
     }
 
-    private boolean craintEchec(IPiece roi) {
+    /**
+     * Permet de savoir si notre roi est en position d'echec ou non
+     * @param roi le roi du joueur qui joue
+     * @return TRUE si le roi est en position d'echec, FALSE dans le cas contraire
+     */
+    public boolean craintEchec(IPiece roi) {
         for (int x = 0; x < HAUTEUR; x++) {
 
             for (int y = 0; y < LARGEUR; y++) {
@@ -222,11 +235,10 @@ public class Echiquier {
 
                 if (getPiece(destination) != null &&
                         getPiece(destination).getCouleur() != roi.getCouleur()) {
-                    // Liste de déplacement des pièces ennemis
-                    List<Coordonnee> l = getPiece(destination).listeDeplacement(this);
-                    //Pour chaque piece adverse on verifie ses déplacements possibles
-                    for (Coordonnee deplacement : l) {
 
+                    List<Coordonnee> listDeplacementPieceEnnemis = getPiece(destination).listeDeplacement(this);
+
+                    for (Coordonnee deplacement : listDeplacementPieceEnnemis) {
                         if (deplacement.getX() == roi.getCoordonnee().getX() && deplacement.getY() == roi.getCoordonnee().getY())
                             return true;
                     }
@@ -236,32 +248,66 @@ public class Echiquier {
         return false;
     }
 
-    private boolean existeEncoreDesDeplacements(Echiquier echiquier, IJoueur joueur) {
+    /**
+     * Permet de retrouver le roi du joueur sur l'echiquier
+     * @param couleurJoueur la couleur du joueur
+     * @return le roi du joueur
+     */
+    public IPiece trouverRoi(Couleur couleurJoueur) {
         Coordonnee destination = new Coordonnee();
+        for (int x = 0; x < HAUTEUR; x++) {
+            for (int y = 0; y < LARGEUR; y++) {
+                destination.setX(x);
+                destination.setY(y);
+
+                if (getPiece(destination) != null) {
+
+                    if (getPiece(destination).getType().equals(TypePiece.ROI) &&
+                            getPiece(destination).getCouleur() == couleurJoueur)
+                        return getPiece(destination);
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Permet de connaître les pieces du joueur qui est en train de jouer
+     * @param joueur le joueur qui joue
+     * @return la liste des pieces du joueur qui est en train de jouer
+     */
+    public List<Coordonnee> getListePiece(IJoueur joueur) {
+        List<Coordonnee> listePiece = new ArrayList<>();
+
         for (int x = 0; x < HAUTEUR; x++) {
 
             for (int y = 0; y < LARGEUR; y++) {
 
-                destination.setX(x);
-                destination.setY(y);
+                Coordonnee dest = new Coordonnee(x, y);
 
-                // C'est une pièce du joueur
-                if (!echiquier.estVide(destination.getX(), destination.getY()) &&
-                        echiquier.getPiece(destination).getCouleur() == joueur.getCouleur()) {
-                    // Regarde les deplacements possibles de cette pièce
-                    IPiece piece = echiquier.getPiece(destination);
-                    List<Coordonnee> listDeplacement = piece.listeDeplacement(echiquier);
-                    // Pour chaque déplacement de cette pièce
-                    for (Coordonnee deplacement : listDeplacement) {
-
-                        if (piece.isDeplacementPossible(echiquier, deplacement, joueur.getCouleur(), listDeplacement))
-                            return true;
-                    }
-                }
+                if (getPiece(dest) != null && getPiece(dest).getCouleur() == joueur.getCouleur())
+                    listePiece.add(dest);
             }
         }
-        return false;
+
+        return listePiece;
     }
 
+    /**
+     * Permet de connaître la liste des destinations possibles de la piece passé en paramètre
+     * @param origine la coordonnee de la piece auquel nous allons testé ses déplacements
+     * @param joueur le joueur qui joue
+     * @return la liste des destinations possibles de la pièce passé en paramètre
+     */
+    public List<Coordonnee> getListeDestination(Coordonnee origine, IJoueur joueur) {
+        List<Coordonnee> listeDestination = new ArrayList<>();
+        for (Coordonnee destination : getPiece(origine).listeDeplacement(this)) {
 
+            if (getPiece(origine).isDeplacementPossible(this, destination, joueur.getCouleur(),
+                    getPiece(origine).listeDeplacement(this)))
+                listeDestination.add(destination);
+        }
+
+        return listeDestination;
+    }
 }
