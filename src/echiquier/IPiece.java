@@ -59,8 +59,8 @@ public interface IPiece {
 
     /**
      * Permet de savoir si le déplacement de la pièce la destination donnée est possible ou non
-     * @param destination
-     * @return
+     * @param destination la coordonnee de destination de la piece
+     * @return TRUE si le deplacement de la piece vers la destination est possible, FALSE dans le cas contraire
      */
     boolean isDeplacementPossible(Echiquier echiquier, Coordonnee destination, Couleur couleurJoueur, List<Coordonnee> listDeplacementDeMaPiece);
 

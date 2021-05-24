@@ -1,7 +1,11 @@
 package joueur;
 
+import echiquier.Coordonnee;
 import echiquier.Echiquier;
 import piece.Couleur;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Modélise un robot dans le jeu de l'échiquier.
@@ -16,6 +20,19 @@ public class Robot extends Joueur {
 
     @Override
     public String coupJouer(Echiquier echiquier, boolean attentionRoiPresqueEnEchec) {
-        return null;
+        List<Coordonnee> listePiece = echiquier.getListePiece(this);
+        Collections.shuffle(listePiece);
+        Coordonnee origine = listePiece.get(0);
+
+        List<Coordonnee> listeDestination = echiquier.getListeDestination(origine, this);
+        Collections.shuffle(listeDestination);
+        Coordonnee destination = listeDestination.get(0);
+
+        String origineString = origine.conversionEnString();
+        String destinationString = destination.conversionEnString();
+
+        echiquier.deplacer(echiquier.getPiece(origine), destination);
+
+        return origineString + destinationString;
     }
 }

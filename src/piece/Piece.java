@@ -125,7 +125,7 @@ public abstract class Piece implements IPiece {
 
     public static boolean craintEchec(Echiquier echiquier, Couleur couleurJoueur, Coordonnee destinationPPP) {
 
-        IPiece roi = trouverRoi(echiquier, couleurJoueur);
+        IPiece roi = echiquier.trouverRoi(couleurJoueur);
         assert (roi != null);
         for (int x = 0; x < HAUTEUR; x++) {
 
@@ -134,16 +134,11 @@ public abstract class Piece implements IPiece {
 
                 if (echiquier.getPiece(destination) != null &&
                         echiquier.getPiece(destination).getCouleur() != roi.getCouleur()) {
-                    // Liste de déplacement des pièces ennemis
-                    List<Coordonnee> l = echiquier.getPiece(destination).listeDeplacement(echiquier);
-                    //Pour chaque piece adverse on verifie ses déplacements possibles
-                    for (Coordonnee deplacement : l) {
+                    /* Pour chaque deplacement des pieces ennemis on vérifie si */
+                    for (Coordonnee deplacementEnnemis : echiquier.getPiece(destination).listeDeplacement(echiquier)) {
 
-                        if (deplacement.getX() == destinationPPP.getX() && deplacement.getY() == destinationPPP.getY())
+                        if (deplacementEnnemis.getX() == destinationPPP.getX() && deplacementEnnemis.getY() == destinationPPP.getY())
                             return true;
-//                        if (deplacement.getX() == roi.getCoordonnee().getX() && deplacement.getY() == roi.getCoordonnee().getY() &&
-//                                !(roi.listeDeplacement(echiquier).size() == 0))
-//                            return true;
                     }
                 }
             }
@@ -151,23 +146,7 @@ public abstract class Piece implements IPiece {
         return false;
     }
 
-    public static IPiece trouverRoi(Echiquier echiquier, Couleur couleurJoueur) {
-        Coordonnee destination = new Coordonnee();
-        for (int x = 0; x < HAUTEUR; x++) {
-            for (int y = 0; y < LARGEUR; y++) {
-                destination.setX(x);
-                destination.setY(y);
 
-                if (echiquier.getPiece(destination) != null) {
-
-                    if (echiquier.getPiece(destination).getType().equals(TypePiece.ROI) &&
-                            echiquier.getPiece(destination).getCouleur() == couleurJoueur)
-                        return echiquier.getPiece(destination);
-                }
-            }
-        }
-        return null;
-    }
 
 
 }
