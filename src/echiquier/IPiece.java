@@ -1,8 +1,5 @@
 package echiquier;
 
-import piece.Couleur;
-import piece.TypePiece;
-
 import java.util.List;
 
 /**
@@ -16,7 +13,7 @@ public interface IPiece {
      * Permet de connaître le type de la pièce
      * @return le type de la pièce
      */
-    TypePiece getType();
+    String getType();
 
     /**
      * Permet de savoir la couleur d'une pièce de l'echequier
@@ -58,10 +55,18 @@ public interface IPiece {
     boolean estAllie(IPiece piece);
 
     /**
-     * Permet de savoir si le déplacement de la pièce la destination donnée est possible ou non
+     * Permet de savoir si le déplacement de la pièce vers la destination passée en paramètre est possible ou non
      * @param destination la coordonnee de destination de la piece
      * @return TRUE si le deplacement de la piece vers la destination est possible, FALSE dans le cas contraire
      */
-    boolean isDeplacementPossible(Echiquier echiquier, Coordonnee destination, Couleur couleurJoueur, List<Coordonnee> listDeplacementDeMaPiece);
+    boolean isDeplacementPossible(Echiquier echiquier, Coordonnee destination, Couleur couleurJoueur,
+                                  List<Coordonnee> listDeplacementDeMaPiece);
+
+    /**
+     * Permet de savoir si notre roi est en position d'echec ou non
+     * @param echiquier l'echiquier sur lequel la vérification à lieu
+     * @return TRUE si le roi est en position d'echec, FALSE dans le cas contraire
+     */
+    boolean craintEchec(Echiquier echiquier);
 
 }

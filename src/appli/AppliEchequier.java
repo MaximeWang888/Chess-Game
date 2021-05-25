@@ -4,14 +4,12 @@ import echiquier.Coordonnee;
 import echiquier.Echiquier;
 import echiquier.IJoueur;
 import echiquier.IPiece;
+import echiquier.Couleur;
 
 import fabrique.FabriqueJoueur;
 import fabrique.FabriquePiece;
 
 import joueur.TypeJoueur;
-
-import piece.Couleur;
-import piece.Piece;
 import piece.TypePiece;
 
 /**
@@ -41,7 +39,9 @@ public class AppliEchequier {
         /* Le boolean indiquant si le roi est en position d'echec */
         boolean attentionRoiPresqueEnEchec = false;
 
-        String coup = "";
+        /* Le coup jouer par le joueur */
+        String coup = "AUDEPARTCAPEUTETREDUNIMPORTEQUOISAUFVIDE";
+
         while (!echiquier.estPartieTerminee(joueur, coup)){
             attentionRoiPresqueEnEchec = isAttentionRoiPresqueEnEchec(echiquier, joueur);
             coup = echiquier.jouer(joueur, attentionRoiPresqueEnEchec);
@@ -57,9 +57,9 @@ public class AppliEchequier {
      */
     private static boolean isAttentionRoiPresqueEnEchec(Echiquier echiquier, IJoueur joueur) {
         boolean attentionRoiPresqueEnEchec;
-        attentionRoiPresqueEnEchec = echiquier.craintEchec(echiquier.trouverRoi(joueur.getCouleur()));
+        attentionRoiPresqueEnEchec = echiquier.trouverRoi(joueur.getCouleur()).craintEchec(echiquier);
         if (attentionRoiPresqueEnEchec)
-            System.out.println("attention ton roi en danger \n");
+            System.out.println("attention ton roi est en danger \n");
         return attentionRoiPresqueEnEchec;
     }
 
@@ -88,20 +88,15 @@ public class AppliEchequier {
         Echiquier echiquier = new Echiquier();
         FabriquePiece fp = new FabriquePiece();
 
-        IPiece roiB = fp.creationPiece(TypePiece.ROI, Couleur.BLANC, new Coordonnee(3,5));
-        IPiece tourB = fp.creationPiece(TypePiece.TOUR, Couleur.BLANC, new Coordonnee(5,2));
-
-        IPiece roiN = fp.creationPiece(TypePiece.ROI, Couleur.NOIR, new Coordonnee(5,6));
-        IPiece tourN = fp.creationPiece(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(0,3));
-        IPiece tourN2 = fp.creationPiece(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(1,6));
-        IPiece tourN3 = fp.creationPiece(TypePiece.TOUR, Couleur.NOIR, new Coordonnee(7,1));
+        IPiece roiB = fp.creationPiece(TypePiece.ROI, Couleur.BLANC, new Coordonnee(5,5));
+        IPiece tourB = fp.creationPiece(TypePiece.TOUR, Couleur.BLANC, new Coordonnee(1,6));
 
         echiquier.ajoutPiece(roiB, roiB.getCoordonnee());
         echiquier.ajoutPiece(tourB, tourB.getCoordonnee());
+
+        IPiece roiN = fp.creationPiece(TypePiece.ROI, Couleur.NOIR, new Coordonnee(5,7));
+
         echiquier.ajoutPiece(roiN, roiN.getCoordonnee());
-        echiquier.ajoutPiece(tourN, tourN.getCoordonnee());
-        echiquier.ajoutPiece(tourN2, tourN2.getCoordonnee());
-        echiquier.ajoutPiece(tourN3, tourN3.getCoordonnee());
 
         return echiquier;
     }

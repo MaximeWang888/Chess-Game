@@ -31,6 +31,33 @@ public class CoordonneeTest {
     }
 
     @Test
+    public void testSetX(){
+        // GIVEN
+        Coordonnee c = new Coordonnee();
+        int changement = 5;
+        // THEN
+        assertEquals(c.getX(), 0);
+        // WHEN
+        c.setX(changement);
+        // THEN
+        assertEquals(c.getX(), changement);
+    }
+
+    @Test
+    public void testSetY(){
+        // GIVEN
+        Coordonnee c = new Coordonnee();
+        int changement = 5;
+        // THEN
+        assertEquals(c.getY(), 0);
+        // WHEN
+        c.setY(changement);
+        // THEN
+        assertEquals(c.getY(), changement);
+    }
+
+
+    @Test
     public void testIsCoordonneeExistante() {
         // GIVEN
         Coordonnee c = new Coordonnee(2,3);
@@ -93,6 +120,54 @@ public class CoordonneeTest {
 
         assertEquals(c7.getY(),7);
         assertEquals(c7.getX(),7);
+    }
+
+    @Test
+    public void testConversionEnString(){
+        // GIVEN
+        Coordonnee c = new Coordonnee(0, 1);
+        Coordonnee c1 = new Coordonnee(1,1);
+        Coordonnee c2 = new Coordonnee(2,1);
+        Coordonnee c3 = new Coordonnee(3,1);
+        Coordonnee c4 = new Coordonnee(4,1);
+        Coordonnee c5 = new Coordonnee(5,1);
+        Coordonnee c6 = new Coordonnee(6,1);
+        Coordonnee c7 = new Coordonnee(7,1);
+        String cString = c.conversionEnString();
+        String c1String = c1.conversionEnString();
+        String c2String = c2.conversionEnString();
+        String c3String = c3.conversionEnString();
+        String c4String = c4.conversionEnString();
+        String c5String = c5.conversionEnString();
+        String c6String = c6.conversionEnString();
+        String c7String = c7.conversionEnString();
+        // THEN
+        assertEquals(cString,"a7");
+
+        assertEquals(c1String,"b7");
+
+        assertEquals(c2String,"c7");
+
+        assertEquals(c3String,"d7");
+
+        assertEquals(c4String,"e7");
+
+        assertEquals(c5String,"f7");
+
+        assertEquals(c6String,"g7");
+
+        assertEquals(c7String,"h7");
+    }
+
+    @Test
+    public void testCoordonneeAlaLimiteDuPlateau(){
+        // GIVEN
+        Coordonnee coordALaLimite = new Coordonnee(0,0);
+        Coordonnee coordALaLimite2 = new Coordonnee(7,5);
+        Coordonnee coordPasALaLimite = new Coordonnee(5,5);
+        // THEN
+        assertEquals(coordALaLimite.coordonneeAlaLimiteDuPlateau(), coordALaLimite2.coordonneeAlaLimiteDuPlateau());
+        assertNotEquals(coordALaLimite.coordonneeAlaLimiteDuPlateau(), coordPasALaLimite.coordonneeAlaLimiteDuPlateau());
     }
 
     @Test

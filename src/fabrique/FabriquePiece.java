@@ -2,8 +2,8 @@ package fabrique;
 
 import echiquier.Coordonnee;
 import echiquier.IPiece;
+import echiquier.Couleur;
 
-import piece.Couleur;
 import piece.Roi;
 import piece.Tour;
 import piece.TypePiece;
@@ -17,8 +17,8 @@ public class FabriquePiece {
 
     public IPiece creationPiece(TypePiece type, Couleur couleur, Coordonnee coordonnee) {
         switch (type){
-            case TOUR : return new Tour(type, couleur, coordonnee);
-            case ROI : return new Roi(type, couleur, coordonnee);
+            case TOUR : return new Tour(couleur, coordonnee);
+            case ROI : return new Roi(couleur, coordonnee);
             default   : return null;
         }
     }

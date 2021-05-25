@@ -1,17 +1,17 @@
 import static org.junit.Assert.*;
 
+import echiquier.*;
+import fabrique.FabriqueJoueur;
 import fabrique.FabriquePiece;
-import joueur.Humain;
 import joueur.Robot;
+import joueur.TypeJoueur;
 import org.junit.Test;
 
-import echiquier.Coordonnee;
-import echiquier.Echiquier;
-import echiquier.IPiece;
-
-import piece.Couleur;
 import piece.Roi;
 import piece.TypePiece;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Tests unitaires sur la classe Echiquier dans le jeu de l'échiquier.
@@ -35,7 +35,7 @@ public class EchiquierTest {
         // GIVEN
         Echiquier echiquier = new Echiquier();
         Coordonnee c1 = new Coordonnee(3,3);
-        IPiece r1 = new Roi(TypePiece.ROI, Couleur.BLANC, c1);
+        IPiece r1 = new Roi(Couleur.BLANC, c1);
         echiquier.ajoutPiece(r1, r1.getCoordonnee());
 
         // THEN
@@ -48,7 +48,7 @@ public class EchiquierTest {
         // GIVEN
         Coordonnee c1 = new Coordonnee(1,2);
         Coordonnee c2 = new Coordonnee(2,2);
-        IPiece r1 = new Roi(TypePiece.ROI, Couleur.BLANC, c1);
+        IPiece r1 = new Roi(Couleur.BLANC, c1);
         Echiquier echiquier = new Echiquier();
         echiquier.ajoutPiece(r1, r1.getCoordonnee());
         // THEN
@@ -60,9 +60,9 @@ public class EchiquierTest {
     public void testToString() {
         // GIVEN
         Echiquier echiquier = new Echiquier();
-        echiquier.ajoutPiece(new Roi(TypePiece.ROI, Couleur.BLANC, new Coordonnee(3,0)),
+        echiquier.ajoutPiece(new Roi(Couleur.BLANC, new Coordonnee(3,0)),
                 new Coordonnee(3,0));
-        echiquier.ajoutPiece(new Roi(TypePiece.ROI, Couleur.NOIR, new Coordonnee(6,6)),
+        echiquier.ajoutPiece(new Roi(Couleur.NOIR, new Coordonnee(6,6)),
                 new Coordonnee(6,6));
 
          StringBuilder affichage = new StringBuilder();
@@ -106,6 +106,7 @@ public class EchiquierTest {
 
     @Test
     public void testGetListeDeplacement(){
+        // GIVEN
         Echiquier e = new Echiquier();
         FabriquePiece fp = new FabriquePiece();
         IPiece p = fp.creationPiece(TypePiece.ROI, Couleur.BLANC, new Coordonnee(1, 6));
@@ -114,5 +115,99 @@ public class EchiquierTest {
         Echiquier e1 = new Echiquier();
         // THEN
         assertNotEquals(e.getListeDeplacement(new Robot(Couleur.BLANC)), e1.getListeDeplacement(new Robot(Couleur.NOIR)));
+    }
+
+    @Test
+    public void testJouer(){
+        // GIVEN
+        Echiquier echiquier = new Echiquier();
+        FabriquePiece fp = new FabriquePiece();
+        FabriqueJoueur fj = new FabriqueJoueur();
+
+        IJoueur joueur = fj.creationJoueur(TypeJoueur.HUMAIN, Couleur.BLANC);
+
+        IPiece roiB = fp.creationPiece(TypePiece.ROI, Couleur.BLANC, new Coordonnee(5,5));
+        IPiece tourB = fp.creationPiece(TypePiece.TOUR, Couleur.BLANC, new Coordonnee(1,6));
+
+        echiquier.ajoutPiece(roiB, roiB.getCoordonnee());
+        echiquier.ajoutPiece(tourB, tourB.getCoordonnee());
+
+        IPiece roiN = fp.creationPiece(TypePiece.ROI, Couleur.NOIR, new Coordonnee(5,7));
+
+        echiquier.ajoutPiece(roiN, roiN.getCoordonnee());
+        // THEN
+//        assertEquals(echiquier.jouer(joueur, false), "");
+    }
+
+    @Test
+    public void testEstPartieTerminee(){
+        // GIVEN
+        Echiquier echiquier = new Echiquier();
+        FabriquePiece fp = new FabriquePiece();
+        FabriqueJoueur fj = new FabriqueJoueur();
+
+        IJoueur joueur = fj.creationJoueur(TypeJoueur.HUMAIN, Couleur.BLANC);
+
+        IPiece roiB = fp.creationPiece(TypePiece.ROI, Couleur.BLANC, new Coordonnee(2,5));
+        IPiece tourB = fp.creationPiece(TypePiece.TOUR, Couleur.BLANC, new Coordonnee(2,4));
+
+        echiquier.ajoutPiece(roiB, roiB.getCoordonnee());
+        echiquier.ajoutPiece(tourB, tourB.getCoordonnee());
+
+        IPiece roiN = fp.creationPiece(TypePiece.ROI, Couleur.NOIR, new Coordonnee(3,4));
+
+        echiquier.ajoutPiece(roiN, roiN.getCoordonnee());
+        // THEN
+        assertEquals(echiquier.estPartieTerminee(joueur, "beuzfbzeu"), false);
+        assertEquals(echiquier.estPartieTerminee(joueur, "abandonner"), true);
+    }
+
+    @Test
+    public void testGetListePiece(){
+        // GIVEN
+        Echiquier echiquier = new Echiquier();
+        FabriquePiece fp = new FabriquePiece();
+        FabriqueJoueur fj = new FabriqueJoueur();
+        IJoueur joueur = fj.creationJoueur(TypeJoueur.HUMAIN, Couleur.BLANC);
+        IPiece roiB = fp.creationPiece(TypePiece.ROI, Couleur.BLANC, new Coordonnee(5,5));
+        echiquier.ajoutPiece(roiB, roiB.getCoordonnee());
+        List<Coordonnee> listPiece = new ArrayList<>();
+        listPiece.add(new Coordonnee(5,5));
+        // THEN
+        assertEquals(echiquier.getListePiece(joueur).get(0).getX(), listPiece.get(0).getX());
+        assertEquals(echiquier.getListePiece(joueur).get(0).getY(), listPiece.get(0).getY());
+
+    }
+
+    @Test
+    public void testGetListeDestination(){
+        // GIVEN
+        Echiquier echiquier = new Echiquier();
+        FabriquePiece fp = new FabriquePiece();
+        FabriqueJoueur fj = new FabriqueJoueur();
+        Coordonnee origine = new Coordonnee(5,5);
+        IJoueur joueur = fj.creationJoueur(TypeJoueur.HUMAIN, Couleur.BLANC);
+        IPiece roiB = fp.creationPiece(TypePiece.ROI, Couleur.BLANC, origine);
+        echiquier.ajoutPiece(roiB, roiB.getCoordonnee());
+        List<Coordonnee> listeDestination = new ArrayList<>();
+        listeDestination.add(new Coordonnee(4,4));
+        // THEN
+        assertEquals(echiquier.getListeDestination(origine, joueur).get(0).getX(), listeDestination.get(0).getX());
+        assertEquals(echiquier.getListeDestination(origine, joueur).get(0).getY(), listeDestination.get(0).getY());
+    }
+
+    @Test
+    public void testTrouverRoi(){
+        // GIVEN
+        Echiquier echiquier = new Echiquier();
+        Echiquier echiquier2 = new Echiquier();
+        FabriquePiece fp = new FabriquePiece();
+        FabriqueJoueur fj = new FabriqueJoueur();
+        IJoueur joueur = fj.creationJoueur(TypeJoueur.HUMAIN, Couleur.BLANC);
+        IPiece roiB = fp.creationPiece(TypePiece.ROI, Couleur.BLANC, new Coordonnee(5,5));
+        echiquier.ajoutPiece(roiB, roiB.getCoordonnee());
+        // THEN
+        assertEquals(echiquier.trouverRoi(joueur.getCouleur()), roiB);
+        assertEquals(echiquier2.trouverRoi(joueur.getCouleur()), null);
     }
 }

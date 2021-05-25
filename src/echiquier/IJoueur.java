@@ -1,7 +1,5 @@
 package echiquier;
 
-import piece.Couleur;
-
 /**
  * Modélise un joueur du jeu d'échec
  * @author  Fabien Rondan, Maxime Wang, Sebastien Ramirez
@@ -16,20 +14,12 @@ public interface IJoueur {
     Couleur getCouleur();
 
     /**
-     * Permet de jouer un coup
-     * @param echiquier
-     * @param attentionRoiPresqueEnEchec
-     * @return
+     * Permet de jouer un coup au joueur, c'est-à-dire une piece du joueur déplacé vers une destination
+     * @param echiquier l'echiquier sur lequel on joue
+     * @param attentionRoiPresqueEnEchec le boolean permettant de savoir si le roi du joueur est
+     *                                   déjà en position d'échec
+     * @return le coup jouer par le joueur sous forme de string
      */
     String jouer(Echiquier echiquier, boolean attentionRoiPresqueEnEchec);
-
-    /**
-     * Le coup jouait par le joueur
-     * @param echiquier
-     * @param attentionRoiPresqueEnEchec
-     * @return
-     */
-    String coupJouer(Echiquier echiquier, boolean attentionRoiPresqueEnEchec);
-
 
 }

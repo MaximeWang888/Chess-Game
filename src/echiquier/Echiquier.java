@@ -1,8 +1,5 @@
 package echiquier;
 
-import piece.Couleur;
-import piece.TypePiece;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -178,26 +175,31 @@ public class Echiquier {
         // Affichage du jeu
         System.out.println(this);
         System.out.println("Au tour des " + joueur.getCouleur() + " de jouer");
-        if (coup.equals("abandonner"))
+        if (coup.equals("abandonner")){
+            abandonnerAffichage(joueur);
             return true;
-        if (coup.equals("proposerNulle"))
-        {
+        }
+        if (coup.equals("proposerNulle")) {
             System.out.println("Entrez 'oui' ou 'non' : ");
             System.out.print("> ");
             Scanner sc = new Scanner(System.in);
-            String réponse = sc.nextLine();
-            while (!(réponse.equals("oui") || réponse.equals("non"))){
+            String reponse = sc.nextLine();
+            while (!(reponse.equals("oui") || reponse.equals("non"))){
                 System.out.print("> ");
-                réponse = sc.nextLine();
-                if (réponse.equals("oui")){
-                    System.out.println("La partie est déclarée nulle");
-                    return true;
-                }else if (réponse.equals("non")){
-                    System.out.println("La partie continue");
-                    return false;
-                }
+                reponse = sc.nextLine();
+            }
+            if (reponse.equals("oui")){
+                System.out.println("La partie est déclarée nulle.");
+                return true;
+            }else if (reponse.equals("non")){
+                System.out.println("La partie continue");
+                return false;
             }
         }
+        // Lorsque le robot ne trouve plus aucun déplacement alors il y a echec et mat
+        if (coup.equals(""))
+            return echecEtMat(joueur);
+
         IPiece roi = this.trouverRoi(joueur.getCouleur());
         assert roi != null;
         List<Coordonnee> listDRoi = roi.listeDeplacement(this);
@@ -208,67 +210,12 @@ public class Echiquier {
             }
         }
         // Si le roi ne peut plus se déplacer du tout alors on vérifie si il est en échec et mat
-        if (this.craintEchec(roi)) {
-            System.out.print("Echec et mat ! les ");
-            if (joueur.getCouleur() == Couleur.BLANC)
-                System.out.print("noirs");
-            else
-                System.out.print("blancs");
-            System.out.println(" ont gagné.");
-            return true;
+        if (roi.craintEchec(this)) {
+            return echecEtMat(joueur);
         }
         // Si le roi n'est pas en échec et mat, dans ce cas là, il est en Pat !
         System.out.println("Pat !");
         return true;
-    }
-
-    /**
-     * Permet de savoir si notre roi est en position d'echec ou non
-     * @param roi le roi du joueur qui joue
-     * @return TRUE si le roi est en position d'echec, FALSE dans le cas contraire
-     */
-    public boolean craintEchec(IPiece roi) {
-        for (int x = 0; x < HAUTEUR; x++) {
-
-            for (int y = 0; y < LARGEUR; y++) {
-                Coordonnee destination = new Coordonnee(x, y);
-
-                if (getPiece(destination) != null &&
-                        getPiece(destination).getCouleur() != roi.getCouleur()) {
-
-                    List<Coordonnee> listDeplacementPieceEnnemis = getPiece(destination).listeDeplacement(this);
-
-                    for (Coordonnee deplacement : listDeplacementPieceEnnemis) {
-                        if (deplacement.getX() == roi.getCoordonnee().getX() && deplacement.getY() == roi.getCoordonnee().getY())
-                            return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Permet de retrouver le roi du joueur sur l'echiquier
-     * @param couleurJoueur la couleur du joueur
-     * @return le roi du joueur
-     */
-    public IPiece trouverRoi(Couleur couleurJoueur) {
-        Coordonnee destination = new Coordonnee();
-        for (int x = 0; x < HAUTEUR; x++) {
-            for (int y = 0; y < LARGEUR; y++) {
-                destination.setX(x);
-                destination.setY(y);
-
-                if (getPiece(destination) != null) {
-
-                    if (getPiece(destination).getType().equals(TypePiece.ROI) &&
-                            getPiece(destination).getCouleur() == couleurJoueur)
-                        return getPiece(destination);
-                }
-            }
-        }
-        return null;
     }
 
     /**
@@ -289,7 +236,6 @@ public class Echiquier {
                     listePiece.add(dest);
             }
         }
-
         return listePiece;
     }
 
@@ -309,5 +255,55 @@ public class Echiquier {
         }
 
         return listeDestination;
+    }
+
+    /**
+     * Permet de retrouver le roi du joueur sur l'echiquier
+     * @param couleurJoueur la couleur du joueur
+     * @return le roi du joueur
+     */
+    public IPiece trouverRoi(Couleur couleurJoueur) {
+        Coordonnee destination = new Coordonnee();
+        for (int x = 0; x < HAUTEUR; x++) {
+            for (int y = 0; y < LARGEUR; y++) {
+                destination.setX(x);
+                destination.setY(y);
+
+                if (getPiece(destination) != null) {
+
+                    if (getPiece(destination).getType().equals("ROI") &&
+                            getPiece(destination).getCouleur() == couleurJoueur)
+                        return getPiece(destination);
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Permet de representé sous la forme textuelle lors d'un abandon
+     * @param joueur le joueur qui joue
+     */
+    private void abandonnerAffichage(IJoueur joueur) {
+        if (joueur.getCouleur() == Couleur.BLANC)
+            System.out.print("Le joueur noir a abandonné. " + "JOUEUR BLANC GAGNANT !!! \n");
+        else
+            System.out.print("Le joueur blanc a abandonné. " + "JOUEUR NOIR GAGNANT !!! \n");
+
+    }
+
+    /**
+     * Permet de representé sous la forme textuelle lors d'un echec et mat
+     * @param joueur le joueur qui joue
+     * @return TRUE pour dire que la partie est terminée et il y a echec et mat
+     */
+    private boolean echecEtMat(IJoueur joueur) {
+        System.out.print("Echec et mat ! les ");
+        if (joueur.getCouleur() == Couleur.BLANC)
+            System.out.print("blancs");
+        else
+            System.out.print("noirs");
+        System.out.println(" ont gagné.");
+        return true;
     }
 }

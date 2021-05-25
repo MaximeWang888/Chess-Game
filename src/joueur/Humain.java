@@ -3,7 +3,7 @@ package joueur;
 import echiquier.Coordonnee;
 import echiquier.Echiquier;
 import echiquier.IPiece;
-import piece.Couleur;
+import echiquier.Couleur;
 
 import java.util.Scanner;
 
@@ -23,7 +23,7 @@ public class Humain extends Joueur {
     }
 
     @Override
-    public String coupJouer(Echiquier echiquier, boolean attentionRoiPresqueEnEchec){
+    public String jouer(Echiquier echiquier, boolean attentionRoiPresqueEnEchec){
         Coordonnee origine = new Coordonnee();
         Coordonnee destination = new Coordonnee();
         boolean depPossible = false;
@@ -32,45 +32,66 @@ public class Humain extends Joueur {
         System.out.print("> ");
         String deplacement = scanner.nextLine();
 
-        if (deplacement.equals("abandonner") || deplacement.equals("proposerNulle"))
-            return deplacement;
-
         while (attentionRoiPresqueEnEchec){
-            deplacement = saisieValide(deplacement);
-            origine = origine.conversionEnCoord(deplacement.substring(0,2));
-            destination = destination.conversionEnCoord(deplacement.substring(2,4));
-            boolean piecePeutSeDéplacer = echiquier.getPiece(origine).
-                    isDeplacementPossible(echiquier, destination, this.getCouleur(), echiquier.getPiece(origine).
-                            listeDeplacement(echiquier));
-            if (piecePeutSeDéplacer){
-                if (isPieceDestSeSacrifiantForRoi(origine,destination, roi, echiquier))
-                    attentionRoiPresqueEnEchec = false;
-                else
-                    deplacement = getStringRoiEnDanger();
-            }else
-                deplacement = getStringCoupIllegal();
+            if (abandonnerOuProposerNulle(deplacement) != null)
+                return deplacement;
+            else {
+                deplacement = saisieValide(deplacement);
+                origine = origine.conversionEnCoord(deplacement.substring(0,2));
+                destination = destination.conversionEnCoord(deplacement.substring(2,4));
+                if (!echiquier.estVide(origine.getX(), origine.getY())){
+
+                    boolean piecePeutSeDeplacer = echiquier.getPiece(origine).
+                            isDeplacementPossible(echiquier, destination, this.getCouleur(), echiquier.getPiece(origine).
+                                    listeDeplacement(echiquier));
+                    if (piecePeutSeDeplacer){
+                        if (isPieceDestSeSacrifiantForRoi(origine,destination, roi, echiquier))
+                            attentionRoiPresqueEnEchec = false;
+                        else
+                            deplacement = getStringRoiEnDanger();
+                    }else
+                        deplacement = getStringCoupIllegal();
+                }
+            }
         }
 
         while (!depPossible) {
-            deplacement = saisieValide(deplacement);
-            origine = origine.conversionEnCoord(deplacement.substring(0,2));
-            destination = destination.conversionEnCoord(deplacement.substring(2,4));
+            if (abandonnerOuProposerNulle(deplacement) != null)
+                return deplacement;
+            else {
+                deplacement = saisieValide(deplacement);
+                origine = origine.conversionEnCoord(deplacement.substring(0,2));
+                destination = destination.conversionEnCoord(deplacement.substring(2,4));
 
-            if (!echiquier.estVide(origine.getX(), origine.getY()) &&
-                    echiquier.getPiece(origine).getCouleur() == this.getCouleur()) {
-                depPossible = echiquier.getPiece(origine).isDeplacementPossible(echiquier, destination, this.getCouleur(),
-                                echiquier.getPiece(origine).listeDeplacement(echiquier));
-            }
-            // Si le deplacement de la piece a la destination n'est pas possible alors re-saisir
-            if (!depPossible) {
-                deplacement = getStringCoupIllegal();
-            }else{
-                echiquier.deplacer(echiquier.getPiece(origine), destination);
+                if (!echiquier.estVide(origine.getX(), origine.getY()) &&
+                        echiquier.getPiece(origine).getCouleur() == this.getCouleur()) {
+                    depPossible = echiquier.getPiece(origine).isDeplacementPossible(echiquier, destination, this.getCouleur(),
+                            echiquier.getPiece(origine).listeDeplacement(echiquier));
+                }
+                // Si le deplacement de la piece a la destination n'est pas possible alors re-saisir
+                if (!depPossible) {
+                    deplacement = getStringCoupIllegal();
+                }else{
+                    echiquier.deplacer(echiquier.getPiece(origine), destination);
+                }
             }
         }
+        System.out.println("Le joueur " + this.getCouleur() + " a joué : " + deplacement);
         return deplacement;
     }
 
+    private String abandonnerOuProposerNulle(String deplacement) {
+        if (deplacement.equals("abandonner") || deplacement.equals("proposerNulle")){
+            System.out.println("Vous avez choisi '" + deplacement + "' :(");
+            return deplacement;
+        }
+        return null;
+    }
+
+    /**
+     * Permet de prévenir sous un format textuel que le coup joué est un coup illegal
+     * @return le nouveau deplacement de la piece du joueur
+     */
     private String getStringCoupIllegal() {
         String deplacement;
         System.out.println("Coup Illégal veuillez rejouez :) \n");
@@ -81,7 +102,7 @@ public class Humain extends Joueur {
 
     /**
      * Permet de prévenir sous un format textuel que le roi est en danger
-     * @return le deplacement
+     * @return le nouveau deplacement de la piece du joueur
      */
     private String getStringRoiEnDanger() {
         String deplacement;
@@ -89,24 +110,6 @@ public class Humain extends Joueur {
         System.out.print("> ");
         deplacement = scanner.nextLine();
         return deplacement;
-    }
-
-    /**
-     * Permet de savoir si la destination de la piece peut se sacrifier pour le roi
-     * @param destination la destination de la piece
-     * @param roi le roi protégé
-     * @param echiquier l'echiquier sur lequel le deplacement de la piece vers la destination aura lieu
-     * @return TRUE si la destination de la piece peut se sacrifier pour le roi, FALSE dans le cas contraire
-     */
-    private boolean isPieceDestSeSacrifiantForRoi(Coordonnee origine, Coordonnee destination, IPiece roi, Echiquier echiquier) {
-        echiquier.getPiece(origine).deplacer(destination, echiquier);
-
-        if (!echiquier.craintEchec(roi)){
-            echiquier.getPiece(destination).deplacer(origine, echiquier);
-            return true;
-        }
-        echiquier.getPiece(destination).deplacer(origine, echiquier);
-        return false;
     }
 
     /**
@@ -122,7 +125,5 @@ public class Humain extends Joueur {
         }
         return deplacement;
     }
-
-
 
 }

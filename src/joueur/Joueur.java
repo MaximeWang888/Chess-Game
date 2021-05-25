@@ -1,9 +1,6 @@
 package joueur;
 
-import echiquier.Coordonnee;
-import echiquier.Echiquier;
-import echiquier.IJoueur;
-import piece.Couleur;
+import echiquier.*;
 
 /**
  * Modélise un joueur dans le jeu d'Echecs.
@@ -24,26 +21,26 @@ public abstract class Joueur implements IJoueur {
         return couleur;
     }
 
-    @Override
-    public String jouer(Echiquier echiquier, boolean attentionRoiPresqueEnEchec){
-        String coup = this.coupJouer(echiquier, attentionRoiPresqueEnEchec);
-        System.out.println("Le joueur " + this.getCouleur() + " a joué : " + coup);
-        return coup;
-    }
-
     /**
-     * Permet d'abandonner la partie.
+     * Permet de savoir si la destination de la piece peut se sacrifier pour le roi
+     * @param destination la destination de la piece
+     * @param roi le roi protégé
+     * @param echiquier l'echiquier sur lequel le deplacement de la piece vers la destination aura lieu
+     * @return TRUE si la destination de la piece peut se sacrifier pour le roi, FALSE dans le cas contraire
      */
-    public void abandonner(){
+    public boolean isPieceDestSeSacrifiantForRoi(Coordonnee origine, Coordonnee destination, IPiece roi, Echiquier echiquier) {
+        IPiece pieceAvant = echiquier.getPiece(destination);
+        echiquier.getPiece(origine).deplacer(destination, echiquier);
 
+        if (!roi.craintEchec(echiquier)){
+            echiquier.getPiece(destination).deplacer(origine, echiquier);
+            echiquier.ajoutPiece(pieceAvant, destination);
+            return true;
+        }
+        echiquier.getPiece(destination).deplacer(origine, echiquier);
+        echiquier.ajoutPiece(pieceAvant, destination);
+
+        return false;
     }
-
-    /**
-     * Permet de proposer nulle à la partie encours.
-     */
-    public void proposerNulle(){
-
-    }
-
 
 }

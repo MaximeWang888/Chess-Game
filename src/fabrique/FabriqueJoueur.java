@@ -1,11 +1,11 @@
 package fabrique;
 
 import echiquier.IJoueur;
+import echiquier.Couleur;
 
 import joueur.Humain;
 import joueur.Robot;
 import joueur.TypeJoueur;
-import piece.Couleur;
 
 import java.util.Scanner;
 

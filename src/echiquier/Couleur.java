@@ -1,7 +1,7 @@
-package piece;
+package echiquier;
 
 /**
- * Enumeration des couleurs des pièces d'échecs.
+ * Enumeration des couleurs des pièces d'échecs et des joueurs.
  * @author  Fabien Rondan, Maxime Wang, Sebastien Ramirez
  * @version 1.0
  */

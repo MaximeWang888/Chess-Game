@@ -68,6 +68,15 @@ public class Coordonnee {
     }
 
     /**
+     * Permet de savoir si la coordonnee est au bord du plateau
+     * @return TRUE si la coordonnee est au bord du plateau, FALSE dans le cas contraire
+     */
+    public boolean coordonneeAlaLimiteDuPlateau(){
+        return this.getX() == LARGEUR - 1 || this.getY() == HAUTEUR - 1 || this.getX() == MINIMUM
+                || this.getY() == MINIMUM;
+    }
+
+    /**
      * Convertie une chaine de deux caractères en coordonée
      * @param saisie La chaine de caractère a convertir
      * @return la coordonnée correspondant à la saisie passé en paramètre

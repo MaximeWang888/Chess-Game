@@ -1,6 +1,7 @@
 package piece;
 
 import echiquier.Coordonnee;
+import echiquier.Couleur;
 import echiquier.Echiquier;
 import echiquier.IPiece;
 
@@ -17,9 +18,6 @@ import static echiquier.Echiquier.LARGEUR;
  */
 public abstract class Piece implements IPiece {
 
-    /** Le type de la pièce */
-    private TypePiece type;
-
     /** Couleur de la pièce */
     private Couleur couleur;
 
@@ -28,19 +26,12 @@ public abstract class Piece implements IPiece {
 
     /**
      * Constructeur à partir d'une couleur et d'une coordonnée
-     * @param type le type de la pièce
      * @param couleur la couleur de la pièce
      * @param coord la coordonnée de la pièce
      */
-    protected Piece(TypePiece type, Couleur couleur, Coordonnee coord) {
-        this.type = type;
+    protected Piece(Couleur couleur, Coordonnee coord) {
         this.couleur = couleur;
         this.coord = coord;
-    }
-
-    @Override
-    public TypePiece getType(){
-        return type;
     }
 
     @Override
@@ -79,13 +70,7 @@ public abstract class Piece implements IPiece {
         // On est bien dans le plateau et pas en dehors des limites du plateau
         if (!this.getCoordonnee().isCoordonneeExistante() && this.getCouleur() == couleurJoueur)
             return false;
-
-        List<Coordonnee> listeDeplacements;
-
-//        if (echiquier.getPiece(destination) == null &&
-//                echiquier.getPiece(destination).getCouleur() == couleurJoueur) {
-
-        listeDeplacements = verifierListeDeplacement(listDeplacementDeMaPiece, echiquier, couleurJoueur);
+        List<Coordonnee> listeDeplacements = verifierListeDeplacement(listDeplacementDeMaPiece, echiquier, couleurJoueur);
 
         for (Coordonnee destinationSûrEtPossible : listeDeplacements) {
 
@@ -93,51 +78,22 @@ public abstract class Piece implements IPiece {
                 return true;
         }
         return false;
-//        }
-
-//        return false;
     }
 
-    private List<Coordonnee> verifierListeDeplacement(List<Coordonnee> listDeplacementDeMaPiece,
-                                                      Echiquier echiquier, Couleur couleurJoueur) {
-        List<Coordonnee> deplacementSur = new ArrayList<>();
-        Coordonnee coordDeMonAnciennePiece = this.getCoordonnee();
-//        IPiece pièceTemporaire;
-        for(Coordonnee destination : listDeplacementDeMaPiece) {
-//            pièceTemporaire = echiquier.getPiece(destination);
-//            echiquier.deplacer(this, destination);
-//            this.deplacer(destination, echiquier);
-            // si je suis une autre piece qu'un roi
-            // je ne suis pas un roi ou si je suis un
-            boolean isEchec = craintEchec(echiquier, couleurJoueur, destination);
-            if (!this.getType().equals(TypePiece.ROI) || !isEchec)
-            {
-                deplacementSur.add(destination);
-            }
-
-
-//            echiquier.deplacer(echiquier.getPiece(destination), coordDeMonAnciennePiece);
-//            echiquier.getPiece(destination).deplacer(this.getCoordonnee(), echiquier);
-//            pièceTemporaire.deplacer(destination, echiquier);
-        }
-        return deplacementSur;
-    }
-
-    public static boolean craintEchec(Echiquier echiquier, Couleur couleurJoueur, Coordonnee destinationPPP) {
-
-        IPiece roi = echiquier.trouverRoi(couleurJoueur);
-        assert (roi != null);
+    @Override
+    public boolean craintEchec(Echiquier echiquier) {
         for (int x = 0; x < HAUTEUR; x++) {
 
             for (int y = 0; y < LARGEUR; y++) {
                 Coordonnee destination = new Coordonnee(x, y);
 
                 if (echiquier.getPiece(destination) != null &&
-                        echiquier.getPiece(destination).getCouleur() != roi.getCouleur()) {
-                    /* Pour chaque deplacement des pieces ennemis on vérifie si */
-                    for (Coordonnee deplacementEnnemis : echiquier.getPiece(destination).listeDeplacement(echiquier)) {
+                        echiquier.getPiece(destination).getCouleur() != this.getCouleur()) {
 
-                        if (deplacementEnnemis.getX() == destinationPPP.getX() && deplacementEnnemis.getY() == destinationPPP.getY())
+                    List<Coordonnee> listDeplacementPieceEnnemis = echiquier.getPiece(destination).listeDeplacement(echiquier);
+
+                    for (Coordonnee deplacement : listDeplacementPieceEnnemis) {
+                        if (deplacement.getX() == this.getCoordonnee().getX() && deplacement.getY() == this.getCoordonnee().getY())
                             return true;
                     }
                 }
@@ -146,7 +102,52 @@ public abstract class Piece implements IPiece {
         return false;
     }
 
+    /**
+     * Permet d'avoir une liste de déplacement sûr de la liste de déplacement de la pièce passé en paramètre
+     * @param listDeplacementDeMaPiece la liste de déplacement possible de ma pièce
+     * @param echiquier l'echiquier sur lequel on joue
+     * @param couleurJoueur la couleur du joueur
+     * @return une liste de déplacement sûr de la liste de déplacement de la pièce passé en paramètre
+     */
+    private List<Coordonnee> verifierListeDeplacement(List<Coordonnee> listDeplacementDeMaPiece,
+                                                      Echiquier echiquier, Couleur couleurJoueur) {
+        List<Coordonnee> deplacementSur = new ArrayList<>();
+        for(Coordonnee destination : listDeplacementDeMaPiece) {
+            boolean isDeplacementSur = isDeplacementSur(echiquier, couleurJoueur, destination);
+            if (!this.getType().equals("ROI") || isDeplacementSur)
+            {
+                deplacementSur.add(destination);
+            }
+        }
+        return deplacementSur;
+    }
 
+    /**
+     * Permet de savoir si la destination est un déplacement sûr
+     * @param echiquier l'echiquier sur lequel on joue
+     * @param couleurJoueur la couleur du joueur
+     * @param destinationTester la destination testé pour savoir si c'est un déplacement sûr
+     * @return TRUE si le déplacement passé en paramètre est un déplacement sûr, FALSE dans le cas contraire
+     */
+    private boolean isDeplacementSur(Echiquier echiquier, Couleur couleurJoueur, Coordonnee destinationTester) {
 
+        for (int x = 0; x < HAUTEUR; x++) {
+
+            for (int y = 0; y < LARGEUR; y++) {
+                Coordonnee destination = new Coordonnee(x, y);
+
+                if (echiquier.getPiece(destination) != null &&
+                        echiquier.getPiece(destination).getCouleur() != couleurJoueur) {
+
+                    for (Coordonnee deplacementEnnemis : echiquier.getPiece(destination).listeDeplacement(echiquier)) {
+
+                        if (deplacementEnnemis.getX() == destinationTester.getX() && deplacementEnnemis.getY() == destinationTester.getY())
+                            return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
 
 }
